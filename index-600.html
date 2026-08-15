@@ -1,0 +1,2236 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- SEO -->
+<title>SEEM — Só o que importa no mercado de trabalho lusófono</title>
+<meta name="description" content="SEEM — Cobertura em tempo real do mercado de trabalho lusófono: vagas, demissões, greves, legislação e muito mais.">
+<meta name="robots" content="index, follow">
+<meta name="theme-color" content="#0a0a0a">
+
+<!-- Open Graph -->
+<meta property="og:title" content="SEEM — Só o que importa no mercado de trabalho">
+<meta property="og:description" content="Cobertura em tempo real do mercado de trabalho lusófono.">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:image" content="https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=1200&h=630&fit=crop&q=80">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:alt" content="SEEM — Só o que importa no mercado de trabalho lusófono">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="SEEM — Mercado de Trabalho Lusófono">
+<meta name="twitter:description" content="Vagas, demissões, greves e legislação em tempo real.">
+<meta name="twitter:image" content="https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=1200&h=630&fit=crop&q=80">
+<meta name="twitter:image:alt" content="SEEM — Só o que importa no mercado de trabalho lusófono">
+
+<!-- Favicon SVG inline -->
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='16' fill='%230a0a0a'/><text y='50%25' x='50%25' font-size='64' font-family='system-ui,sans-serif' font-weight='900' fill='%23FFD700' text-anchor='middle' dominant-baseline='central'>S</text></svg>">
+
+<style>
+/* ═══════════════════════════════════════════
+   RESET & TOKENS
+═══════════════════════════════════════════ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:        #0a0a0a;
+  --bg2:       #111111;
+  --bg3:       #1a1a1a;
+  --card-bg:   #141414;
+  --border:    #252525;
+  --gold:      #FFD700;
+  --gold-dim:  rgba(255,215,0,0.15);
+  --gold-dark: #b8960a;
+  --red:       #FF3333;
+  --orange:    #FF6B00;
+  --blue:      #4A9EFF;
+  --green:     #22c55e;
+  --purple:    #A855F7;
+  --text:      #f0f0f0;
+  --muted:     #888888;
+  --radius:    7px;
+  --shadow:    0 4px 28px rgba(0,0,0,0.55);
+  --font: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+}
+
+[data-theme="light"] {
+  --bg:        #f5f4f0;
+  --bg2:       #eeede9;
+  --bg3:       #e5e4e0;
+  --card-bg:   #ffffff;
+  --border:    #d4d2cb;
+  --gold:      #B8860B;
+  --gold-dim:  rgba(184,134,11,0.12);
+  --gold-dark: #8a6309;
+  --red:       #C0392B;
+  --orange:    #C0560B;
+  --blue:      #1A6FD1;
+  --green:     #1A7A44;
+  --text:      #13120e;
+  --muted:     #706c5e;
+  --shadow:    0 4px 28px rgba(0,0,0,0.12);
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--text);
+  font-size: 15px;
+  line-height: 1.65;
+  overflow-x: hidden;
+  transition: background 0.3s, color 0.3s;
+}
+
+a { color: inherit; text-decoration: none; }
+img { display: block; width: 100%; object-fit: cover; }
+button { cursor: pointer; font-family: var(--font); border: none; background: none; }
+
+a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ═══════════════════════════════════════════
+   MAINTENANCE OVERLAY
+═══════════════════════════════════════════ */
+#maintenance-overlay {
+  position: fixed; inset: 0;
+  background: #050505;
+  z-index: 9999;
+  display: none;
+  flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 24px; text-align: center;
+}
+#maintenance-overlay.active { display: flex; }
+.maint-logo { font-size: 52px; font-weight: 900; color: var(--gold); letter-spacing: -2px; }
+.maint-icon { font-size: 44px; animation: spin 2.5s linear infinite; }
+.maint-text { color: #777; font-size: 17px; letter-spacing: 0.06em; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ═══════════════════════════════════════════
+   TICKER BAND
+═══════════════════════════════════════════ */
+#ticker {
+  background: var(--orange);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  overflow: hidden;
+  white-space: nowrap;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  position: relative;
+  z-index: 300;
+}
+
+#ticker::before {
+  content: '🔴 AO VIVO';
+  background: rgba(0,0,0,0.25);
+  padding: 0 16px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  position: relative;
+  z-index: 1;
+}
+
+.ticker-track {
+  display: inline-flex;
+  animation: tickerScroll 50s linear infinite;
+  padding-left: 40px;
+}
+
+.ticker-track:hover { animation-play-state: paused; }
+
+.ticker-item {
+  display: inline-block;
+  padding: 0 36px;
+  opacity: 0.92;
+}
+.ticker-item::after {
+  content: '◆';
+  margin-left: 36px;
+  opacity: 0.45;
+}
+
+@keyframes tickerScroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+/* ═══════════════════════════════════════════
+   HEADER
+═══════════════════════════════════════════ */
+#header {
+  position: sticky; top: 0; z-index: 200;
+  background: rgba(10,10,10,0.88);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(255,215,0,0.13);
+  transition: background 0.3s;
+}
+[data-theme="light"] #header {
+  background: rgba(245,244,240,0.92);
+  border-bottom-color: rgba(184,134,11,0.18);
+}
+
+.header-top {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 10px 24px;
+  max-width: 1380px;
+  margin: 0 auto;
+  flex-wrap: wrap;
+}
+
+/* Logo */
+.logo-block { flex-shrink: 0; display: flex; flex-direction: column; line-height: 1; }
+
+.logo {
+  font-size: 29px;
+  font-weight: 900;
+  letter-spacing: -1.5px;
+  background: linear-gradient(90deg, var(--gold) 0%, #fff9d6 50%, var(--gold) 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: goldShimmer 3s linear infinite;
+}
+@keyframes goldShimmer { to { background-position: 200% center; } }
+
+.logo-tag {
+  font-size: 8.5px;
+  color: var(--muted);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  -webkit-text-fill-color: var(--muted);
+}
+
+/* Live dot + clock */
+.live-block {
+  display: flex; align-items: center; gap: 7px;
+  flex-shrink: 0;
+}
+.live-dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--red);
+  animation: pulseDot 1.4s ease-in-out infinite;
+  flex-shrink: 0;
+}
+@keyframes pulseDot {
+  0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(255,51,51,0.5); }
+  50%       { opacity: 0.6; box-shadow: 0 0 0 5px rgba(255,51,51,0); }
+}
+#live-label { font-size: 10px; font-weight: 700; color: var(--red); letter-spacing: 0.1em; }
+#clock { font-size: 12px; font-weight: 700; color: var(--muted); font-variant-numeric: tabular-nums; letter-spacing: 0.04em; }
+
+/* Search */
+.search-wrap { flex: 1; max-width: 300px; position: relative; }
+#search-input {
+  width: 100%;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 7px 16px 7px 34px;
+  color: var(--text);
+  font-size: 13px;
+  font-family: var(--font);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+#search-input::placeholder { color: var(--muted); }
+#search-input:focus { border-color: var(--gold); box-shadow: 0 0 0 2px var(--gold-dim); outline: none; }
+.search-icon { position: absolute; left: 11px; top: 50%; transform: translateY(-50%); color: var(--muted); font-size: 13px; pointer-events: none; }
+
+/* Filters: país + setor */
+.header-selects {
+  display: flex; gap: 8px; flex-shrink: 0;
+}
+.header-select {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text);
+  font-size: 12px;
+  font-family: var(--font);
+  padding: 6px 10px;
+  cursor: pointer;
+  transition: border-color 0.2s;
+  max-width: 130px;
+}
+.header-select:focus { border-color: var(--gold); outline: none; }
+
+/* Theme toggle */
+.header-actions { display: flex; align-items: center; gap: 8px; margin-left: auto; flex-shrink: 0; }
+
+/* ── AUTH ── */
+#auth-btn {
+  display: flex; align-items: center; gap: 6px;
+  background: var(--bg3); border: 1px solid var(--border);
+  border-radius: 20px; padding: 5px 12px 5px 7px;
+  font-size: 11.5px; font-weight: 700; color: var(--muted);
+  letter-spacing: 0.04em; cursor: pointer;
+  transition: border-color 0.15s, color 0.15s;
+  white-space: nowrap;
+}
+#auth-btn:hover { border-color: var(--gold-dark); color: var(--gold); }
+#auth-btn img { width: 22px; height: 22px; border-radius: 50%; object-fit: cover; }
+#auth-btn .auth-icon { font-size: 16px; line-height: 1; }
+#auth-spinner { display: none; width: 16px; height: 16px;
+  border: 2px solid var(--border); border-top-color: var(--gold);
+  border-radius: 50%; animation: spin 0.7s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+#theme-toggle {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  width: 34px; height: 34px;
+  font-size: 15px;
+  display: inline-flex; align-items: center; justify-content: center;
+  transition: border-color 0.2s, transform 0.15s;
+}
+#theme-toggle:hover { border-color: var(--gold); transform: scale(1.1); }
+
+/* ── MAIO HUB BUTTON ── */
+#maio-hub-btn {
+  display: flex; align-items: center; gap: 6px;
+  background: var(--gold); color: #0a0a0a;
+  border-radius: 20px; padding: 6px 14px;
+  font-size: 11.5px; font-weight: 800;
+  letter-spacing: 0.04em; text-transform: uppercase;
+  white-space: nowrap; cursor: pointer;
+  transition: transform 0.15s, box-shadow 0.15s;
+  box-shadow: 0 2px 10px rgba(255,215,0,0.25);
+}
+#maio-hub-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 14px rgba(255,215,0,0.4); }
+
+/* ═══════════════════════════════════════════
+   NAVBAR
+═══════════════════════════════════════════ */
+#navbar {
+  border-top: 1px solid var(--border);
+  overflow-x: auto; scrollbar-width: none;
+}
+#navbar::-webkit-scrollbar { display: none; }
+.nav-inner {
+  display: flex; padding: 0 24px;
+  max-width: 1380px; margin: 0 auto;
+  gap: 2px;
+}
+.nav-btn {
+  background: none;
+  color: var(--muted);
+  font-size: 10.5px; font-weight: 700;
+  letter-spacing: 0.09em; text-transform: uppercase;
+  padding: 10px 14px;
+  border-bottom: 2px solid transparent;
+  white-space: nowrap;
+  transition: color 0.15s, border-color 0.15s;
+}
+.nav-btn:hover { color: var(--text); }
+.nav-btn.active { color: var(--gold); border-bottom-color: var(--gold); }
+
+/* ═══════════════════════════════════════════
+   MAIN LAYOUT — 2 colunas
+═══════════════════════════════════════════ */
+#page {
+  max-width: 1380px;
+  margin: 0 auto;
+  padding: 32px 24px;
+  display: grid;
+  grid-template-columns: 1fr 310px;
+  grid-template-rows: auto auto;
+  gap: 32px;
+  align-items: start;
+}
+
+@media (max-width: 1100px) { #page { grid-template-columns: 1fr; } }
+@media (max-width: 700px)  { #page { padding: 20px 14px; gap: 24px; } }
+
+/* Hero ocupa 2 colunas */
+#hero-section { grid-column: 1 / -1; }
+
+/* ═══════════════════════════════════════════
+   HERO
+═══════════════════════════════════════════ */
+#hero {
+  position: relative;
+  border-radius: 11px;
+  overflow: hidden;
+  min-height: 460px;
+  cursor: pointer;
+  background: var(--bg3);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  will-change: transform;
+}
+
+#hero:hover { box-shadow: 0 16px 56px rgba(255,215,0,0.1); }
+
+.hero-img {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s ease;
+}
+#hero:hover .hero-img { transform: scale(1.025); }
+
+.hero-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.96) 0%, rgba(0,0,0,0.55) 55%, rgba(0,0,0,0.08) 100%);
+}
+[data-theme="light"] .hero-overlay {
+  background: linear-gradient(to top, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.5) 55%, rgba(0,0,0,0.04) 100%);
+}
+
+.hero-body {
+  position: relative; z-index: 2;
+  display: flex; flex-direction: column; justify-content: flex-end;
+  height: 100%; min-height: 460px;
+  padding: 36px;
+}
+
+/* Hero skeleton */
+.hero-skeleton {
+  position: absolute; inset: 0;
+  background: var(--bg3);
+  display: flex; align-items: flex-end;
+  padding: 36px; z-index: 3;
+}
+.hero-skeleton-inner { width: 100%; }
+
+/* Typewriter title */
+.hero-title {
+  font-size: clamp(24px, 3.8vw, 44px);
+  font-weight: 900;
+  line-height: 1.13;
+  color: #fff;
+  margin-bottom: 12px;
+  letter-spacing: -0.5px;
+  text-shadow: 0 2px 12px rgba(0,0,0,0.6);
+}
+
+.hero-title-cursor {
+  display: inline-block;
+  width: 3px;
+  background: var(--gold);
+  margin-left: 2px;
+  animation: blink 0.8s step-end infinite;
+  vertical-align: middle;
+  height: 1em;
+}
+@keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+
+.hero-sub {
+  font-size: 15px;
+  color: rgba(255,255,255,0.7);
+  max-width: 640px;
+  line-height: 1.6;
+  margin-bottom: 18px;
+}
+.hero-meta {
+  display: flex; align-items: center; gap: 14px;
+  font-size: 11.5px; color: rgba(255,255,255,0.5);
+  flex-wrap: wrap; margin-bottom: 16px;
+}
+.hero-expand-btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: var(--gold); color: #000;
+  font-weight: 800; font-size: 11.5px; letter-spacing: 0.08em; text-transform: uppercase;
+  padding: 10px 22px;
+  border-radius: var(--radius);
+  transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+}
+.hero-expand-btn:hover {
+  background: #ffe033;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255,215,0,0.35);
+}
+.hero-expand-btn:active { transform: scale(0.96); }
+
+/* Hero article expand */
+.hero-expanded {
+  background: var(--bg2);
+  border-top: 2px solid var(--gold);
+  border-radius: 0 0 11px 11px;
+  overflow: hidden;
+  max-height: 0;
+  transition: max-height 0.55s cubic-bezier(0.4,0,0.2,1);
+}
+.hero-expanded.open { max-height: 12000px; }
+.hero-expanded-inner { padding: 36px 36px 28px; max-width: 780px; }
+
+/* ═══════════════════════════════════════════
+   BADGES
+═══════════════════════════════════════════ */
+.badges-row {
+  display: flex; align-items: center; gap: 8px;
+  margin-bottom: 13px; flex-wrap: wrap;
+}
+.badge {
+  font-size: 9px; font-weight: 800;
+  letter-spacing: 0.14em; text-transform: uppercase;
+  padding: 3px 10px; border-radius: 3px;
+}
+.badge-URGENTE         { background: var(--red);    color: #fff; }
+.badge-VAGAS           { background: var(--green);  color: #fff; }
+.badge-DEMISSÕES       { background: var(--orange); color: #fff; }
+.badge-GREVES          { background: var(--purple); color: #fff; }
+.badge-RECUPERAÇÃO     { background: #0e7490;       color: #fff; }
+.badge-LEGISLAÇÃO      { background: var(--blue);   color: #fff; }
+.badge-MUNDO           { background: #475569;       color: #fff; }
+.badge-default         { background: var(--muted);  color: #fff; }
+
+.temp-badge {
+  font-size: 11px; padding: 2px 8px;
+  border-radius: 20px;
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.15);
+  color: #fff;
+}
+
+.country-badge {
+  font-size: 11px; color: rgba(255,255,255,0.5);
+  display: flex; align-items: center; gap: 3px;
+}
+
+/* ═══════════════════════════════════════════
+   ARTICLE BODY
+═══════════════════════════════════════════ */
+.article-body p {
+  margin-bottom: 18px;
+  font-size: 15.5px;
+  line-height: 1.8;
+  color: var(--text);
+}
+.article-author-line {
+  font-size: 12px; color: var(--muted);
+  margin-bottom: 22px; padding-bottom: 18px;
+  border-bottom: 1px solid var(--border);
+}
+
+/* ═══════════════════════════════════════════
+   SHARE BUTTONS
+═══════════════════════════════════════════ */
+.share-row {
+  display: flex; align-items: center; gap: 10px;
+  margin: 22px 0 26px;
+  padding-top: 18px;
+  border-top: 1px solid var(--border);
+}
+.share-label {
+  font-size: 11px; font-weight: 700;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--muted); margin-right: 2px;
+}
+.share-btn {
+  width: 34px; height: 34px;
+  display: inline-flex; align-items: center; justify-content: center;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  font-size: 15px;
+  transition: border-color 0.2s, transform 0.15s, background 0.2s;
+}
+.share-btn:hover { border-color: var(--gold); transform: translateY(-2px) scale(1.06); }
+.share-whatsapp:hover { color: #22c55e; }
+.share-x:hover { color: var(--text); }
+.share-copy:hover { color: var(--blue); }
+
+/* ═══════════════════════════════════════════
+   SECTION HEADER
+═══════════════════════════════════════════ */
+.section-header {
+  display: flex; align-items: center; gap: 12px;
+  margin-bottom: 22px;
+}
+.section-title {
+  font-size: 10px; font-weight: 800;
+  letter-spacing: 0.16em; text-transform: uppercase;
+  color: var(--muted); white-space: nowrap;
+}
+.section-line { flex: 1; height: 1px; background: var(--border); }
+.section-count { font-size: 10px; color: var(--muted); letter-spacing: 0.08em; }
+
+/* ═══════════════════════════════════════════
+   FEED GRID (coluna principal)
+═══════════════════════════════════════════ */
+#feed-section { min-width: 0; }
+
+#feed {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 18px;
+}
+
+/* ═══════════════════════════════════════════
+   CARDS
+═══════════════════════════════════════════ */
+.card-wrap {
+  opacity: 0; transform: translateY(22px);
+  transition: opacity 0.38s, transform 0.38s;
+}
+.card-wrap.visible { opacity: 1; transform: none; }
+
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  overflow: hidden;
+  display: flex; flex-direction: column;
+  transition: transform 0.22s, box-shadow 0.22s, border-color 0.22s;
+  will-change: transform;
+}
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 36px rgba(0,0,0,0.35);
+  border-color: rgba(255,215,0,0.3);
+}
+
+.card-img-wrap {
+  aspect-ratio: 16/9; overflow: hidden;
+  background: var(--bg3); position: relative;
+}
+.card-img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s; }
+.card:hover .card-img { transform: scale(1.05); }
+.card-no-img {
+  width: 100%; height: 100%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 30px; color: var(--border); background: var(--bg3);
+}
+
+.card-body { padding: 17px; display: flex; flex-direction: column; flex: 1; }
+.card-badges { display: flex; gap: 6px; margin-bottom: 10px; flex-wrap: wrap; }
+.card-title {
+  font-size: 15px; font-weight: 700;
+  line-height: 1.33; margin-bottom: 8px; color: var(--text);
+  display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
+}
+.card-sub {
+  font-size: 13px; color: var(--muted); line-height: 1.52;
+  margin-bottom: 12px;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+  flex: 1;
+}
+.card-meta {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 11px; color: var(--muted); margin-bottom: 12px;
+}
+.card-dot { color: var(--border); }
+.card-expand-btn {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 8px 14px;
+  font-size: 11.5px; font-weight: 700;
+  color: var(--muted); width: 100%; text-align: center;
+  letter-spacing: 0.05em;
+  transition: background 0.15s, border-color 0.15s, color 0.15s, transform 0.1s;
+}
+.card-expand-btn:hover, .card-expand-btn.open {
+  background: var(--border); border-color: var(--gold-dark); color: var(--gold);
+}
+.card-expand-btn:active { transform: scale(0.97); }
+
+/* Card article expand */
+.card-article {
+  background: var(--bg2);
+  border-top: 1px solid var(--border);
+  overflow: hidden; max-height: 0;
+  transition: max-height 0.48s cubic-bezier(0.4,0,0.2,1);
+}
+.card-article.open { max-height: 10000px; }
+.card-article-inner { padding: 20px 17px 17px; }
+
+/* ═══════════════════════════════════════════
+   SIDEBAR
+═══════════════════════════════════════════ */
+#sidebar {
+  position: sticky; top: 90px;
+  display: flex; flex-direction: column; gap: 24px;
+}
+
+@media (max-width: 1100px) { #sidebar { position: static; } }
+
+.sidebar-widget {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  overflow: hidden;
+}
+.sidebar-widget-title {
+  font-size: 9.5px; font-weight: 800;
+  letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--muted); padding: 14px 16px;
+  border-bottom: 1px solid var(--border);
+}
+
+/* Vagas em destaque widget */
+.vaga-item {
+  display: flex; gap: 12px; align-items: flex-start;
+  padding: 13px 16px;
+  border-bottom: 1px solid var(--border);
+  transition: background 0.15s;
+  cursor: pointer;
+}
+.vaga-item:last-child { border-bottom: none; }
+.vaga-item:hover { background: var(--bg3); }
+.vaga-item:focus-visible { background: var(--bg3); }
+
+.vaga-flag { font-size: 20px; flex-shrink: 0; line-height: 1; margin-top: 2px; }
+.vaga-info {}
+.vaga-title { font-size: 13px; font-weight: 700; line-height: 1.35; margin-bottom: 3px; }
+.vaga-meta { font-size: 11px; color: var(--muted); }
+.vaga-badge {
+  font-size: 9px; font-weight: 800;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  padding: 2px 7px; border-radius: 2px;
+  display: inline-block; margin-top: 5px;
+}
+
+/* Stats widget */
+.stats-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 0;
+}
+.stat-item {
+  padding: 14px 16px;
+  border-right: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+.stat-item:nth-child(even) { border-right: none; }
+.stat-item:nth-last-child(-n+2) { border-bottom: none; }
+.stat-num {
+  font-size: 22px; font-weight: 900;
+  color: var(--gold); line-height: 1;
+  letter-spacing: -0.5px;
+}
+.stat-label { font-size: 10.5px; color: var(--muted); margin-top: 3px; }
+
+/* ═══════════════════════════════════════════
+   SKELETON LOADING
+═══════════════════════════════════════════ */
+.skeleton {
+  background: linear-gradient(90deg, var(--bg3) 25%, var(--border) 50%, var(--bg3) 75%);
+  background-size: 200% 100%;
+  animation: shimmerSk 1.5s infinite;
+  border-radius: 4px;
+}
+@keyframes shimmerSk { to { background-position: -200% 0; } }
+.skeleton-img { aspect-ratio: 16/9; }
+.skeleton-line { height: 12px; margin-bottom: 8px; }
+.skeleton-line.w80 { width: 80%; }
+.skeleton-line.w60 { width: 60%; }
+.skeleton-line.w40 { width: 40%; }
+
+/* ═══════════════════════════════════════════
+   COMMENTS
+═══════════════════════════════════════════ */
+.comments-section {
+  margin-top: 28px;
+  border-top: 1px solid var(--border);
+  padding-top: 22px;
+}
+.comments-title {
+  font-size: 11.5px; font-weight: 700;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--muted); margin-bottom: 18px;
+}
+.comment-form {
+  display: flex; flex-direction: column; gap: 9px;
+  margin-bottom: 24px;
+}
+.comment-form-row { display: flex; gap: 9px; }
+.comment-input {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 9px 13px;
+  color: var(--text); font-size: 13px; font-family: var(--font);
+  transition: border-color 0.2s; width: 100%;
+}
+.comment-input::placeholder { color: var(--muted); }
+.comment-input:focus { border-color: var(--gold); outline: none; }
+.comment-textarea { resize: vertical; min-height: 76px; }
+.comment-submit-btn {
+  background: var(--gold); color: #000;
+  font-weight: 800; font-size: 11.5px;
+  letter-spacing: 0.06em; text-transform: uppercase;
+  padding: 10px 20px; border-radius: var(--radius);
+  white-space: nowrap;
+  transition: background 0.15s, transform 0.12s, box-shadow 0.15s;
+}
+.comment-submit-btn:hover { background: #ffe033; transform: translateY(-1px); box-shadow: 0 4px 14px rgba(255,215,0,0.3); }
+.comment-submit-btn:active { transform: scale(0.96); }
+.comment-submit-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+.comment-list { display: flex; flex-direction: column; gap: 14px; }
+.comment-item {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 8px; padding: 13px 15px;
+}
+.comment-header {
+  display: flex; justify-content: space-between; align-items: flex-start;
+  margin-bottom: 7px;
+}
+.comment-author { font-size: 12.5px; font-weight: 700; color: var(--gold); }
+.comment-time { font-size: 11px; color: var(--muted); }
+.comment-text { font-size: 13.5px; line-height: 1.6; color: var(--text); margin-bottom: 9px; }
+.comment-actions { display: flex; align-items: center; gap: 12px; }
+
+.like-btn {
+  font-size: 12.5px; color: var(--muted);
+  display: flex; align-items: center; gap: 4px;
+  padding: 2px 6px; border-radius: 4px;
+  transition: color 0.15s;
+}
+.like-btn:hover { color: #e05; }
+.like-btn.liked { color: #e05; }
+.like-btn.pulse { animation: likePulse 0.3s ease; }
+@keyframes likePulse { 0% { transform: scale(1); } 50% { transform: scale(1.45); } 100% { transform: scale(1); } }
+
+.reply-toggle-btn {
+  font-size: 11.5px; color: var(--muted);
+  padding: 2px 6px; border-radius: 4px;
+  transition: color 0.15s;
+}
+.reply-toggle-btn:hover { color: var(--blue); }
+
+.replies-block {
+  margin-top: 11px; padding-top: 11px;
+  border-top: 1px solid var(--border);
+  display: flex; flex-direction: column; gap: 9px;
+}
+.reply-item {
+  padding-left: 14px;
+  border-left: 2px solid var(--border);
+  font-size: 12.5px; line-height: 1.6;
+}
+.reply-author { font-weight: 700; color: var(--blue); font-size: 11.5px; }
+.reply-form { display: flex; gap: 7px; margin-top: 8px; }
+.reply-form .comment-input { font-size: 12px; padding: 7px 11px; }
+.reply-form button {
+  background: var(--blue); color: #fff;
+  font-size: 12px; font-weight: 700;
+  padding: 7px 14px; border-radius: var(--radius);
+  white-space: nowrap; transition: opacity 0.15s;
+}
+.reply-form button:hover { opacity: 0.85; }
+
+.comments-empty { font-size: 12.5px; color: var(--muted); text-align: center; padding: 18px; }
+.comments-loading { font-size: 12px; color: var(--muted); text-align: center; padding: 14px; letter-spacing: 0.06em; }
+
+/* ═══════════════════════════════════════════
+   TOAST
+═══════════════════════════════════════════ */
+#toast-container {
+  position: fixed; bottom: 24px; right: 24px;
+  z-index: 1000; display: flex; flex-direction: column; gap: 10px;
+  pointer-events: none;
+}
+.toast {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--gold);
+  border-radius: 8px; padding: 12px 16px;
+  font-size: 13px; font-weight: 600; color: var(--text);
+  box-shadow: var(--shadow);
+  opacity: 0; transform: translateX(20px);
+  transition: opacity 0.25s, transform 0.25s;
+  pointer-events: auto; max-width: 300px;
+  line-height: 1.45;
+}
+.toast.show { opacity: 1; transform: translateX(0); }
+.toast.red  { border-left-color: var(--red); }
+.toast.blue { border-left-color: var(--blue); }
+
+/* Toast de nova notícia (com título + CTA) */
+.toast-news-title {
+  font-weight: 700; margin-bottom: 6px;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+}
+.toast-news-cta {
+  display: inline-flex; align-items: center; gap: 5px;
+  background: var(--gold); color: #000;
+  font-size: 11px; font-weight: 800; letter-spacing: 0.05em; text-transform: uppercase;
+  padding: 6px 12px; border-radius: 5px; margin-top: 4px;
+  transition: background 0.15s, transform 0.12s;
+}
+.toast-news-cta:hover { background: #ffe033; transform: translateY(-1px); }
+
+/* ═══════════════════════════════════════════
+   LOAD MORE
+═══════════════════════════════════════════ */
+#load-sentinel { height: 40px; margin-top: 16px; }
+#load-spinner { text-align: center; padding: 18px; color: var(--muted); font-size: 13px; display: none; }
+#load-spinner.active { display: block; }
+
+/* ═══════════════════════════════════════════
+   EMPTY STATE
+═══════════════════════════════════════════ */
+.empty-state {
+  grid-column: 1 / -1; text-align: center;
+  padding: 60px 24px; color: var(--muted);
+}
+.empty-state-icon { font-size: 46px; margin-bottom: 12px; }
+.empty-state-text { font-size: 14.5px; }
+
+/* ═══════════════════════════════════════════
+   FOOTER
+═══════════════════════════════════════════ */
+#footer {
+  background: var(--bg2);
+  border-top: 1px solid var(--border);
+  padding: 52px 24px 32px;
+  margin-top: 64px;
+}
+.footer-inner {
+  max-width: 1380px; margin: 0 auto;
+  display: grid; grid-template-columns: 1fr auto;
+  gap: 32px; align-items: start;
+}
+@media (max-width: 640px) { .footer-inner { grid-template-columns: 1fr; } }
+.footer-logo { font-size: 22px; font-weight: 900; color: var(--gold); letter-spacing: -1px; }
+.footer-tagline { font-size: 12px; color: var(--muted); margin-top: 4px; }
+.footer-flags { font-size: 20px; letter-spacing: 4px; margin-top: 16px; line-height: 1; }
+.footer-links { display: flex; gap: 20px; flex-wrap: wrap; margin-top: 8px; }
+.footer-links a { font-size: 12px; color: var(--muted); transition: color 0.15s; }
+.footer-links a:hover { color: var(--gold); }
+.footer-copy { font-size: 11px; color: var(--muted); opacity: 0.6; margin-top: 4px; }
+
+/* ═══════════════════════════════════════════
+   RESPONSIVE HEADER
+═══════════════════════════════════════════ */
+@media (max-width: 760px) {
+  .header-top { flex-wrap: wrap; gap: 10px; }
+  .search-wrap { order: 3; max-width: 100%; flex: 1 1 100%; }
+  .header-selects { display: none; }
+  .live-block #clock { display: none; }
+  .hero-body { padding: 22px; }
+  .hero-expanded-inner { padding: 22px 18px; }
+  #navbar .nav-btn { padding: 10px 10px; font-size: 9.5px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════ MAINTENANCE ═══════════ -->
+<div id="maintenance-overlay" role="alert" aria-live="assertive">
+  <div class="maint-logo">SEEM</div>
+  <div class="maint-icon" aria-hidden="true">⚙️</div>
+  <div class="maint-text">Voltamos em breve.</div>
+</div>
+
+<!-- ═══════════ TICKER ═══════════ -->
+<div id="ticker" role="marquee" aria-label="Manchetes ao vivo">
+  <div class="ticker-track" id="ticker-track">
+    <span class="ticker-item">A carregar manchetes…</span>
+    <span class="ticker-item">A carregar manchetes…</span>
+  </div>
+</div>
+
+<!-- ═══════════ HEADER ═══════════ -->
+<header id="header">
+  <div class="header-top">
+    <div class="logo-block">
+      <span class="logo" aria-label="SEEM — início">SEEM</span>
+      <span class="logo-tag">Só o que importa</span>
+    </div>
+
+    <div class="live-block">
+      <div class="live-dot" aria-hidden="true"></div>
+      <span id="live-label">AO VIVO</span>
+      <span id="clock" aria-live="off">--:--:--</span>
+    </div>
+
+    <div class="search-wrap">
+      <span class="search-icon" aria-hidden="true">🔍</span>
+      <input type="search" id="search-input" placeholder="Buscar notícias…"
+        autocomplete="off" aria-label="Buscar notícias">
+    </div>
+
+    <!-- Filtros de país e setor -->
+    <div class="header-selects">
+      <select id="filter-pais" class="header-select" aria-label="Filtrar por país">
+        <option value="">🌍 Todos os países</option>
+        <option value="Brasil">🇧🇷 Brasil</option>
+        <option value="Portugal">🇵🇹 Portugal</option>
+        <option value="Angola">🇦🇴 Angola</option>
+        <option value="Moçambique">🇲🇿 Moçambique</option>
+        <option value="Cabo Verde">🇨🇻 Cabo Verde</option>
+        <option value="Timor-Leste">🇹🇱 Timor-Leste</option>
+      </select>
+      <select id="filter-setor" class="header-select" aria-label="Filtrar por setor">
+        <option value="">🏢 Todos os setores</option>
+        <option value="tecnologia">💻 Tecnologia</option>
+        <option value="saúde">🏥 Saúde</option>
+        <option value="educação">📚 Educação</option>
+        <option value="construção">🏗️ Construção</option>
+        <option value="comércio">🛒 Comércio</option>
+        <option value="indústria">🏭 Indústria</option>
+      </select>
+    </div>
+
+    <div class="header-actions">
+      <a id="maio-hub-btn" href="https://smaiol.vercel.app" target="_blank" rel="noopener noreferrer"
+        aria-label="Abrir o MAIO — simulador de entrevista de emprego" title="Abrir o MAIO — simulador de entrevista de emprego">
+        <span aria-hidden="true">🎯</span><span>MAIO</span>
+      </a>
+      <button id="auth-btn" aria-label="Entrar com Google" title="Entrar com Google">
+        <div id="auth-spinner"></div>
+        <span class="auth-icon" id="auth-icon">👤</span>
+        <span id="auth-label">Entrar</span>
+      </button>
+      <button id="theme-toggle" aria-label="Alternar tema claro/escuro">🌙</button>
+    </div>
+  </div>
+
+  <nav id="navbar" aria-label="Categorias de notícias">
+    <div class="nav-inner">
+      <button class="nav-btn active" data-cat="TODOS" aria-pressed="true">Todas</button>
+      <button class="nav-btn" data-cat="URGENTE"   aria-pressed="false">Urgente</button>
+      <button class="nav-btn" data-cat="VAGAS"     aria-pressed="false">Vagas</button>
+      <button class="nav-btn" data-cat="DEMISSÕES" aria-pressed="false">Demissões</button>
+      <button class="nav-btn" data-cat="GREVES"    aria-pressed="false">Greves</button>
+      <button class="nav-btn" data-cat="RECUPERAÇÃO" aria-pressed="false">Rec. Judicial</button>
+      <button class="nav-btn" data-cat="LEGISLAÇÃO"  aria-pressed="false">Legislação</button>
+      <button class="nav-btn" data-cat="MUNDO"     aria-pressed="false">Mundo</button>
+    </div>
+  </nav>
+</header>
+
+<!-- ═══════════ MAIN ═══════════ -->
+<div id="page">
+
+  <!-- HERO — ocupa largura total via grid-column: 1/-1 -->
+  <section id="hero-section" aria-label="Notícia em destaque">
+    <div id="hero">
+      <!-- Skeleton -->
+      <div class="hero-skeleton" id="hero-skeleton">
+        <div class="hero-skeleton-inner">
+          <div class="skeleton skeleton-line w40" style="margin-bottom:16px;height:18px;"></div>
+          <div class="skeleton skeleton-line" style="height:38px;margin-bottom:10px;"></div>
+          <div class="skeleton skeleton-line w80" style="height:38px;margin-bottom:20px;"></div>
+          <div class="skeleton skeleton-line w60" style="height:14px;"></div>
+        </div>
+      </div>
+      <img class="hero-img" id="hero-img" src="" alt="" loading="lazy" aria-hidden="true">
+      <div class="hero-overlay" aria-hidden="true"></div>
+      <div class="hero-body" id="hero-body" aria-label="Notícia principal"></div>
+    </div>
+    <div class="hero-expanded" id="hero-expanded" aria-hidden="true">
+      <div class="hero-expanded-inner" id="hero-expanded-inner"></div>
+    </div>
+  </section>
+
+  <!-- FEED PRINCIPAL -->
+  <main id="feed-section" aria-label="Feed de notícias">
+    <div class="section-header">
+      <span class="section-title" id="feed-label">Últimas notícias</span>
+      <div class="section-line"></div>
+      <span class="section-count" id="feed-count"></span>
+    </div>
+    <div id="feed" role="list" aria-live="polite"></div>
+    <div id="load-sentinel" aria-hidden="true"></div>
+    <div id="load-spinner" aria-live="polite">A carregar mais notícias…</div>
+  </main>
+
+  <!-- SIDEBAR -->
+  <aside id="sidebar" aria-label="Destaques e informações">
+
+    <!-- Vagas em destaque (preenchido dinamicamente via renderVagasDestaque) -->
+    <div class="sidebar-widget" id="sidebar-vagas">
+      <div class="sidebar-widget-title">⭐ Vagas em destaque</div>
+      <div id="vagas-list">
+        <div class="comments-loading">A carregar vagas…</div>
+      </div>
+    </div>
+
+    <!-- Stats rápidas -->
+    <div class="sidebar-widget">
+      <div class="sidebar-widget-title">📊 Mercado hoje</div>
+      <div class="stats-grid" id="stats-grid">
+        <div class="stat-item">
+          <div class="stat-num" id="stat-vagas">—</div>
+          <div class="stat-label">Vagas publicadas</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num" id="stat-demissoes">—</div>
+          <div class="stat-label">Demissões</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num" id="stat-greves">—</div>
+          <div class="stat-label">Greves ativas</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num" id="stat-total">—</div>
+          <div class="stat-label">Notícias hoje</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Países cobertos -->
+    <div class="sidebar-widget">
+      <div class="sidebar-widget-title">🌍 Cobertura lusófona</div>
+      <div style="padding:14px 16px;display:flex;flex-direction:column;gap:9px;">
+        <div style="display:flex;align-items:center;gap:10px;font-size:13px;">🇧🇷 <span>Brasil</span></div>
+        <div style="display:flex;align-items:center;gap:10px;font-size:13px;">🇵🇹 <span>Portugal</span></div>
+        <div style="display:flex;align-items:center;gap:10px;font-size:13px;">🇦🇴 <span>Angola</span></div>
+        <div style="display:flex;align-items:center;gap:10px;font-size:13px;">🇲🇿 <span>Moçambique</span></div>
+        <div style="display:flex;align-items:center;gap:10px;font-size:13px;">🇨🇻 <span>Cabo Verde</span></div>
+        <div style="display:flex;align-items:center;gap:10px;font-size:13px;">🇹🇱 <span>Timor-Leste</span></div>
+      </div>
+    </div>
+
+  </aside>
+</div>
+
+<!-- ═══════════ FOOTER ═══════════ -->
+<footer id="footer" aria-label="Rodapé SEEM">
+  <div class="footer-inner">
+    <div>
+      <div class="footer-logo">SEEM</div>
+      <div class="footer-tagline">Informação que move carreiras.</div>
+      <div class="footer-flags" aria-label="Países cobertos">🇧🇷 🇵🇹 🇦🇴 🇲🇿 🇨🇻 🇹🇱</div>
+    </div>
+    <div>
+      <div class="footer-links">
+        <a href="#">Sobre</a>
+        <a href="#">Contato</a>
+        <a href="#">Privacidade</a>
+      </div>
+      <div class="footer-copy">© <span id="ano-footer"></span> SEEM. Todos os direitos reservados.</div>
+    </div>
+  </div>
+</footer>
+
+<!-- ═══════════ TOAST ═══════════ -->
+<div id="toast-container" aria-live="assertive" aria-atomic="false"></div>
+
+<!-- ═══════════════════════════════════════════
+     JAVASCRIPT
+═══════════════════════════════════════════ -->
+<script type="module">
+'use strict';
+
+/* ═══ CONFIG ═══ */
+const FB          = 'https://seem-new2-default-rtdb.firebaseio.com';
+const PAGE_SIZE   = 9;
+const POLL_NEWS   = 20000;
+const POLL_MAINT  = 25000;
+
+/* ═══ ESTADO ═══ */
+let allNews       = [];
+let filteredNews  = [];
+let displayedCount= 0;
+let heroOpen      = false;
+let activeFilter  = 'TODOS';
+let searchQuery   = '';
+let filterPais    = '';
+let filterSetor   = '';
+let heroNoticia   = null;
+let openCards     = new Set();
+let knownKeys     = new Set();
+let userName      = localStorage.getItem('seem_name') || '';
+let commentLikes  = JSON.parse(localStorage.getItem('seem_likes') || '{}');
+let typewriterTimeout = null;
+let semMaisNoFirebase = false;  // true quando o Firebase não tem mais lotes a buscar
+let buscandoMais     = false;   // trava para evitar requisições paralelas
+
+/* ═══ ANO FOOTER ═══ */
+document.getElementById('ano-footer').textContent = new Date().getFullYear();
+
+/* ═══ RELÓGIO ═══ */
+function updateClock() {
+  const n = new Date();
+  document.getElementById('clock').textContent =
+    [n.getHours(), n.getMinutes(), n.getSeconds()]
+      .map(v => String(v).padStart(2, '0')).join(':');
+}
+updateClock();
+setInterval(updateClock, 1000);
+
+/* ═══ THEME ═══ */
+const themeBtn = document.getElementById('theme-toggle');
+let isDark = true;
+
+function applyTheme(dark) {
+  document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
+  themeBtn.textContent = dark ? '🌙' : '☀️';
+  themeBtn.setAttribute('aria-label', dark ? 'Mudar para tema claro' : 'Mudar para tema escuro');
+}
+
+themeBtn.addEventListener('click', () => {
+  isDark = !isDark;
+  applyTheme(isDark);
+  localStorage.setItem('seem_theme', isDark ? 'dark' : 'light');
+});
+
+(function() {
+  const saved = localStorage.getItem('seem_theme');
+  if (saved) isDark = saved === 'dark';
+  else if (window.matchMedia('(prefers-color-scheme: light)').matches) isDark = false;
+  applyTheme(isDark);
+})();
+
+/* ═══ TOAST ═══
+   showToast(msg, type)        → toast simples de texto
+   showToast({html, type})     → toast com HTML customizado (ex: nova notícia + CTA)         */
+function showToast(arg, type = '') {
+  const isRich = typeof arg === 'object' && arg !== null;
+  const el = document.createElement('div');
+  el.className = `toast ${isRich ? (arg.type || '') : type}`;
+  if (isRich) el.innerHTML = arg.html;
+  else el.textContent = arg;
+
+  document.getElementById('toast-container').appendChild(el);
+  requestAnimationFrame(() => requestAnimationFrame(() => el.classList.add('show')));
+
+  const duration = isRich ? 7000 : 4500;
+  const timer = setTimeout(() => dismissToast(el), duration);
+
+  // Pausa o auto-dismiss enquanto o utilizador interage com o toast
+  el.addEventListener('mouseenter', () => clearTimeout(timer));
+  el.addEventListener('mouseleave', () => setTimeout(() => dismissToast(el), 1800));
+
+  return el;
+}
+
+function dismissToast(el) {
+  if (!el || !el.isConnected) return;
+  el.classList.remove('show');
+  setTimeout(() => el.remove(), 300);
+}
+
+/* Toast específico para notícia nova, com título real + botão "Ver agora" */
+function showNewsToast(noticia) {
+  const el = showToast({
+    type: 'red',
+    html: `
+      <div>🆕 Nova notícia publicada</div>
+      <div class="toast-news-title">${esc(noticia.titulo || '')}</div>
+      <button type="button" class="toast-news-cta" data-ts="${noticia.ts}">Ver agora →</button>
+    `
+  });
+  el.querySelector('.toast-news-cta').addEventListener('click', () => {
+    goToNoticia(noticia.ts);
+    dismissToast(el);
+  });
+}
+
+/* Leva o utilizador até à notícia (reseta filtros, vai ao hero ou expande o card) */
+function goToNoticia(ts) {
+  // Reseta filtros para garantir que a notícia está visível no feed
+  activeFilter = 'TODOS'; filterPais = ''; filterSetor = ''; searchQuery = '';
+  document.getElementById('search-input').value = '';
+  document.getElementById('filter-pais').value = '';
+  document.getElementById('filter-setor').value = '';
+  document.querySelectorAll('.nav-btn').forEach(b => {
+    const isAll = b.dataset.cat === 'TODOS';
+    b.classList.toggle('active', isAll);
+    b.setAttribute('aria-pressed', isAll);
+  });
+  applyFilter();
+
+  // Se for a notícia em destaque (hero), abre o hero
+  if (heroNoticia && heroNoticia.ts === ts) {
+    document.getElementById('hero').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    if (!heroOpen) document.getElementById('hero-expand-btn')?.click();
+    return;
+  }
+
+  // Caso contrário, vai carregando mais lotes do feed até encontrar o card
+  const tryFind = (attempts) => {
+    const card = document.querySelector(`.card-wrap[data-ts="${ts}"]`);
+    if (card) {
+      card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      card.style.outline = '2px solid var(--gold)';
+      setTimeout(() => { card.style.outline = ''; }, 1800);
+      return;
+    }
+    const remaining = filteredNews.slice(1).length - displayedCount;
+    if (remaining > 0 && attempts > 0) {
+      renderFeed(false);
+      setTimeout(() => tryFind(attempts - 1), 120);
+    }
+  };
+  tryFind(40);
+}
+
+/* ═══ ESCAPE HELPERS ═══ */
+function esc(s) {
+  return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+/* ═══ UTILS ═══ */
+function relTime(ts) {
+  const diff = Date.now() - ts;
+  const min  = Math.floor(diff / 60000);
+  const hr   = Math.floor(diff / 3600000);
+  const day  = Math.floor(diff / 86400000);
+  if (min < 1)   return 'Agora mesmo';
+  if (min < 60)  return `Há ${min} min`;
+  if (hr  < 24)  return `Há ${hr}h`;
+  if (day === 1) return 'Ontem';
+  if (day < 30)  return `Há ${day} dias`;
+  const d = new Date(ts);
+  return `${d.getDate()} ${['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'][d.getMonth()]}`;
+}
+
+function readTime(text) {
+  return `${Math.max(1, Math.ceil((text || '').split(/\s+/).length / 200))} min`;
+}
+
+function tempBadge(t) {
+  return { fresca: '🧊 Fresca', quente: '🔥 Quente', muito: '🌋 Urgente' }[t] || '';
+}
+
+function catBadgeClass(cat) {
+  const c = (cat || '').toUpperCase();
+  if (c.includes('URGENTE'))    return 'badge-URGENTE';
+  if (c.includes('VAGA'))       return 'badge-VAGAS';
+  if (c.includes('DEMISS'))     return 'badge-DEMISSÕES';
+  if (c.includes('GREVE'))      return 'badge-GREVES';
+  if (c.includes('LEGISLA'))    return 'badge-LEGISLAÇÃO';
+  if (c.includes('RECUPE'))     return 'badge-RECUPERAÇÃO';
+  if (c.includes('MUNDO'))      return 'badge-MUNDO';
+  return 'badge-default';
+}
+
+function catBadgeHTML(cat) {
+  return `<span class="badge ${catBadgeClass(cat)}">${esc(cat || 'NOTÍCIA')}</span>`;
+}
+
+function countryFlag(p) {
+  return { Brasil:'🇧🇷', Portugal:'🇵🇹', Angola:'🇦🇴', Moçambique:'🇲🇿', 'Cabo Verde':'🇨🇻', 'Timor-Leste':'🇹🇱' }[p] || '🌍';
+}
+
+function corpoHtml(corpo) {
+  return (corpo || '').split('\n').filter(p => p.trim()).map(p => `<p>${esc(p)}</p>`).join('');
+}
+
+/* ═══ EFEITO TYPEWRITER (título do hero) ═══
+   Escreve o texto letra a letra com um cursor piscante no fim.
+   clearTimeout cancela qualquer animação anterior em andamento — isto é
+   essencial para quando a notícia principal muda (ex: via polling): a
+   função é chamada de novo em renderHero() e reinicia do zero, sem deixar
+   "resíduos" da animação anterior sobrepostos. */
+function typewriter(el, text, speed = 22) {
+  clearTimeout(typewriterTimeout);
+  el.innerHTML = '<span class="hero-title-cursor"></span>';
+  let i = 0;
+  const cursor = el.querySelector('.hero-title-cursor');
+  function type() {
+    if (i < text.length) {
+      el.insertBefore(document.createTextNode(text[i]), cursor);
+      i++;
+      typewriterTimeout = setTimeout(type, speed);
+    }
+  }
+  type();
+}
+
+/* ═══ HERO TILT ═══ */
+function initHeroTilt() {
+  const hero = document.getElementById('hero');
+  hero.addEventListener('mousemove', e => {
+    const r = hero.getBoundingClientRect();
+    const x = (e.clientX - r.left) / r.width  - 0.5;
+    const y = (e.clientY - r.top)  / r.height - 0.5;
+    hero.style.transform = `perspective(900px) rotateY(${x * 3}deg) rotateX(${-y * 2}deg)`;
+  });
+  hero.addEventListener('mouseleave', () => {
+    hero.style.transform = '';
+  });
+}
+initHeroTilt();
+
+/* ═══ MAINTENANCE ═══ */
+async function checkMaintenance() {
+  try {
+    const r = await fetch(`${FB}/manutencao.json`);
+    const v = await r.json();
+    const ov = document.getElementById('maintenance-overlay');
+    ov.classList.toggle('active', v === true);
+    ov.setAttribute('aria-hidden', v !== true);
+  } catch(e) {}
+}
+checkMaintenance();
+setInterval(checkMaintenance, POLL_MAINT);
+
+/* ═══ FIREBASE FETCH ═══
+   Carga inicial: busca apenas as 30 notícias mais recentes.
+   O restante do banco é paginado sob demanda pelo scroll infinito
+   via fetchMaisNoticias(). */
+async function fetchNews() {
+  try {
+    const r = await fetch(`${FB}/noticias.json?orderBy="ts"&limitToLast=30`);
+    const d = await r.json();
+    if (!d) return [];
+    return Object.values(d)
+      .filter(n => n && n.ts && n.titulo)
+      .sort((a, b) => b.ts - a.ts);
+  } catch(e) { return []; }
+}
+
+/* Busca o próximo lote de 10 notícias mais antigas que o ts mínimo já carregado.
+   Chamada pelo scroll infinito quando allNews está esgotada. */
+async function fetchMaisNoticias() {
+  if (buscandoMais || semMaisNoFirebase) return;
+  buscandoMais = true;
+  try {
+    const tsMin = allNews.length ? Math.min(...allNews.map(n => n.ts)) : Date.now();
+    const url   = `${FB}/noticias.json?orderBy="ts"&limitToLast=10&endAt=${tsMin - 1}`;
+    const r     = await fetch(url);
+    const d     = await r.json();
+    if (!d) { semMaisNoFirebase = true; return; }
+
+    const lote = Object.values(d)
+      .filter(n => n && n.ts && n.titulo && !knownKeys.has(n.ts))
+      .sort((a, b) => b.ts - a.ts);
+
+    if (!lote.length) { semMaisNoFirebase = true; return; }
+
+    lote.forEach(n => knownKeys.add(n.ts));
+    allNews = [...allNews, ...lote];
+    applyFilter();
+
+    if (lote.length < 10) semMaisNoFirebase = true;
+  } catch(e) {}
+  finally { buscandoMais = false; }
+}
+
+async function fetchComentarios(ts) {
+  try {
+    const r = await fetch(`${FB}/comentarios/${ts}.json`);
+    const d = await r.json();
+    if (!d) return [];
+    return Object.entries(d).map(([k, v]) => ({ ...v, _key: k }));
+  } catch(e) { return []; }
+}
+
+async function postComentario(ts, obj) {
+  const r = await fetch(`${FB}/comentarios/${ts}.json`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(obj)
+  });
+  const d = await r.json();
+  return d?.name || null;
+}
+
+/* ═══ TICKER ═══ */
+function buildTicker() {
+  const items = allNews.slice(0, 14).map(n => n.titulo).filter(Boolean);
+  if (!items.length) return;
+  const doubled = [...items, ...items];
+  document.getElementById('ticker-track').innerHTML =
+    doubled.map(t => `<span class="ticker-item">${esc(t)}</span>`).join('');
+}
+
+/* ═══ FILTER + SEARCH ═══ */
+function applyFilter() {
+  const q = searchQuery.toLowerCase();
+  filteredNews = allNews.filter(n => {
+    const catMatch  = activeFilter === 'TODOS' || (n.categoria || '').toUpperCase().includes(activeFilter.toUpperCase());
+    const paisMatch = !filterPais  || (n.pais || '') === filterPais;
+    const setorMatch= !filterSetor || ((n.setor || n.corpo || '').toLowerCase().includes(filterSetor));
+    const txtMatch  = !q || (n.titulo||'').toLowerCase().includes(q) || (n.subtitulo||'').toLowerCase().includes(q);
+    return catMatch && paisMatch && setorMatch && txtMatch;
+  });
+
+  displayedCount = 0;
+  document.getElementById('feed').innerHTML = '';
+  openCards.clear();
+
+  const label = activeFilter === 'TODOS' ? 'Últimas notícias' :
+    activeFilter.charAt(0) + activeFilter.slice(1).toLowerCase();
+  document.getElementById('feed-label').textContent = label;
+  document.getElementById('feed-count').textContent =
+    `${filteredNews.length} notícia${filteredNews.length !== 1 ? 's' : ''}`;
+
+  renderHero();
+  renderFeed(true);
+}
+
+/* ═══ SIDEBAR: VAGAS EM DESTAQUE (dados reais, não hardcoded) ═══ */
+function renderVagasDestaque() {
+  const list = document.getElementById('vagas-list');
+  if (!list) return;
+
+  // Notícias da categoria VAGAS, mais recentes primeiro, limitadas a 5
+  const vagas = allNews
+    .filter(n => (n.categoria || '').toUpperCase().includes('VAGA'))
+    .sort((a, b) => b.ts - a.ts)
+    .slice(0, 5);
+
+  if (!vagas.length) {
+    list.innerHTML = '<div class="comments-empty">Sem vagas em destaque no momento.</div>';
+    return;
+  }
+
+  list.innerHTML = vagas.map(n => `
+    <div class="vaga-item" data-ts="${n.ts}" role="button" tabindex="0" aria-label="Ver vaga: ${esc(n.titulo)}">
+      <div class="vaga-flag" aria-hidden="true">${countryFlag(n.pais)}</div>
+      <div class="vaga-info">
+        <div class="vaga-title">${esc(n.titulo || '')}</div>
+        <div class="vaga-meta">${esc(n.pais || '')} · ${relTime(n.ts)}</div>
+        ${n.subtitulo ? `<span class="vaga-badge" style="background:var(--green);color:#fff">${esc(n.subtitulo.slice(0, 38))}${n.subtitulo.length > 38 ? '…' : ''}</span>` : ''}
+      </div>
+    </div>
+  `).join('');
+
+  // Clique leva direto até à notícia
+  list.querySelectorAll('.vaga-item').forEach(item => {
+    const ts = Number(item.dataset.ts);
+    item.addEventListener('click', () => goToNoticia(ts));
+    item.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); goToNoticia(ts); }
+    });
+  });
+}
+
+/* ═══ STATS SIDEBAR ═══ */
+function updateStats() {
+  const today = new Date().setHours(0, 0, 0, 0);
+  const todayNews = allNews.filter(n => n.ts >= today);
+  document.getElementById('stat-vagas').textContent =
+    allNews.filter(n => (n.categoria||'').includes('VAGA')).length || '—';
+  document.getElementById('stat-demissoes').textContent =
+    allNews.filter(n => (n.categoria||'').includes('DEMISS')).length || '—';
+  document.getElementById('stat-greves').textContent =
+    allNews.filter(n => (n.categoria||'').includes('GREVE')).length || '—';
+  document.getElementById('stat-total').textContent = todayNews.length || allNews.length || '—';
+}
+
+/* ═══ NAVBAR ═══ */
+document.querySelectorAll('.nav-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.nav-btn').forEach(b => {
+      b.classList.remove('active'); b.setAttribute('aria-pressed', 'false');
+    });
+    btn.classList.add('active'); btn.setAttribute('aria-pressed', 'true');
+    activeFilter = btn.dataset.cat;
+    applyFilter();
+  });
+});
+
+/* ═══ SEARCH ═══ */
+let searchTimer;
+document.getElementById('search-input').addEventListener('input', e => {
+  clearTimeout(searchTimer);
+  searchTimer = setTimeout(() => { searchQuery = e.target.value.trim(); applyFilter(); }, 260);
+});
+
+/* ═══ SELECTS (país / setor) ═══ */
+document.getElementById('filter-pais').addEventListener('change', e => {
+  filterPais = e.target.value; applyFilter();
+});
+document.getElementById('filter-setor').addEventListener('change', e => {
+  filterSetor = e.target.value; applyFilter();
+});
+
+/* ═══ HERO RENDER ═══
+   Renderiza a notícia principal (a mais recente após os filtros aplicados).
+   É chamada sempre que a lista filtrada muda: ao aplicar filtros, ao buscar,
+   e também pelo polling quando chega uma notícia nova que passa a ser a #1.
+   Cada chamada reinicia o typewriter no título (ver função typewriter()).
+   Se o artigo expandido já estava aberto, atualizamos também o seu conteúdo
+   e os comentários para a notícia atual — assim o utilizador nunca vê o
+   corpo/comentários de uma notícia antiga junto com um título novo. */
+function renderHero() {
+  const n = filteredNews[0];
+  const sk = document.getElementById('hero-skeleton');
+
+  if (!n) { sk.style.display = 'flex'; return; }
+
+  heroNoticia = n;
+  sk.style.display = 'none';
+
+  const heroImg = document.getElementById('hero-img');
+  heroImg.src = n.imagem || '';
+  heroImg.alt = n.titulo || '';
+
+  const body = document.getElementById('hero-body');
+  const tb   = tempBadge(n.temperatura);
+
+  body.innerHTML = `
+    <div class="badges-row">
+      ${catBadgeHTML(n.categoria)}
+      ${tb ? `<span class="temp-badge">${tb}</span>` : ''}
+      <span class="country-badge">${countryFlag(n.pais)} ${esc(n.pais || '')}</span>
+    </div>
+    <h1 class="hero-title" id="hero-title-el"></h1>
+    <p class="hero-sub">${esc(n.subtitulo || '')}</p>
+    <div class="hero-meta">
+      <span>${relTime(n.ts)}</span>
+      <span>·</span>
+      <span>${readTime(n.corpo)}</span>
+      <span>·</span>
+      <span>${esc(n.autor || 'Redação SEEM')}</span>
+    </div>
+    <button class="hero-expand-btn" id="hero-expand-btn"
+      aria-expanded="${heroOpen}" aria-controls="hero-expanded">
+      ${heroOpen ? 'Fechar ▴' : 'Leia agora ▾'}
+    </button>
+  `;
+
+  // Dispara o typewriter no título a cada notícia nova exibida no hero
+  const titleEl = document.getElementById('hero-title-el');
+  typewriter(titleEl, n.titulo || '');
+
+  document.getElementById('hero-expand-btn').addEventListener('click', () => {
+    heroOpen = !heroOpen;
+    const exp = document.getElementById('hero-expanded');
+    exp.classList.toggle('open', heroOpen);
+    exp.setAttribute('aria-hidden', !heroOpen);
+    const btn = document.getElementById('hero-expand-btn');
+    btn.setAttribute('aria-expanded', heroOpen);
+    btn.textContent = heroOpen ? 'Fechar ▴' : 'Leia agora ▾';
+    if (heroOpen) {
+      populateHeroArticle(n);
+      setTimeout(() => exp.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100);
+    }
+  });
+
+  // Se o painel já estava expandido (ex: utilizador estava a ler quando a
+  // notícia principal mudou), atualiza corpo + comentários para a notícia atual.
+  if (heroOpen) populateHeroArticle(n);
+}
+
+/* Preenche o corpo do artigo e os comentários da notícia em destaque.
+   Chamada sempre que o hero é expandido OU quando a notícia do hero muda
+   enquanto o painel já está aberto — garante que os comentários exibidos
+   correspondem sempre à notícia atualmente visível. */
+function populateHeroArticle(n) {
+  const inner = document.getElementById('hero-expanded-inner');
+  inner.innerHTML = `
+    <div class="article-author-line">Por ${esc(n.autor || 'Redação SEEM')} · ${relTime(n.ts)}</div>
+    <div class="article-body">${corpoHtml(n.corpo)}</div>
+    ${shareButtonsHTML(n.titulo)}
+    <div id="comments-wrap-hero-${n.ts}"></div>
+  `;
+  bindShareButtons(inner);
+  renderComentarios(n.ts, `comments-wrap-hero-${n.ts}`);
+}
+
+/* ═══ RENDER DO FEED (cards) ═══
+   renderFeed(reset) é chamada de duas formas:
+   - reset = true  → limpa o feed e começa do zero (ex: ao trocar de filtro)
+   - reset = false → acrescenta o próximo lote (chamada pelo scroll infinito)
+   displayedCount guarda quantos cards já foram renderizados, para sabermos
+   onde a próxima "página" (batch) deve começar. */
+function renderFeed(reset) {
+  const feed = document.getElementById('feed');
+
+  if (reset) { feed.innerHTML = ''; displayedCount = 0; }
+
+  const slice = filteredNews.slice(1); // a primeira notícia é o hero, não entra no grid
+  const batch = slice.slice(displayedCount, displayedCount + PAGE_SIZE);
+
+  if (!slice.length && displayedCount === 0) {
+    feed.innerHTML = `
+      <div class="empty-state">
+        <div class="empty-state-icon">📭</div>
+        <div class="empty-state-text">Nenhuma notícia encontrada.</div>
+      </div>`;
+    return;
+  }
+
+  batch.forEach(n => {
+    const wrap = document.createElement('div');
+    wrap.className = 'card-wrap';
+    wrap.setAttribute('role', 'listitem');
+    wrap.dataset.ts = n.ts;
+    wrap.innerHTML = cardHTML(n);
+    feed.appendChild(wrap);
+
+    // Fade-in on scroll
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) { e.target.classList.add('visible'); io.disconnect(); }
+      });
+    }, { threshold: 0.08 });
+    io.observe(wrap);
+
+    // Expand button
+    wrap.querySelector('.card-expand-btn')?.addEventListener('click', () => toggleCard(n, wrap));
+  });
+
+  displayedCount += batch.length;
+}
+
+function cardHTML(n) {
+  const tb = tempBadge(n.temperatura);
+  const imgBlock = n.imagem
+    ? `<img class="card-img" src="${esc(n.imagem)}" alt="${esc(n.titulo)}" loading="lazy">`
+    : `<div class="card-no-img" aria-hidden="true">📰</div>`;
+
+  return `
+    <article class="card" aria-label="${esc(n.titulo)}">
+      <div class="card-img-wrap">${imgBlock}</div>
+      <div class="card-body">
+        <div class="card-badges">
+          ${catBadgeHTML(n.categoria)}
+          ${tb ? `<span class="temp-badge" style="color:var(--text);background:var(--bg3);border-color:var(--border)">${tb}</span>` : ''}
+        </div>
+        <h2 class="card-title">${esc(n.titulo || '')}</h2>
+        <p class="card-sub">${esc(n.subtitulo || '')}</p>
+        <div class="card-meta">
+          <span>${relTime(n.ts)}</span>
+          <span class="card-dot">·</span>
+          <span>${readTime(n.corpo)}</span>
+          <span class="card-dot">·</span>
+          <span>${countryFlag(n.pais)}</span>
+        </div>
+        <button class="card-expand-btn" aria-expanded="false"
+          aria-label="Expandir: ${esc(n.titulo)}">Leia mais ▾</button>
+      </div>
+      <div class="card-article" aria-hidden="true"></div>
+    </article>`;
+}
+
+function toggleCard(n, wrap) {
+  const art = wrap.querySelector('.card-article');
+  const btn = wrap.querySelector('.card-expand-btn');
+  const isOpen = art.classList.contains('open');
+
+  if (!isOpen) {
+    art.innerHTML = `
+      <div class="card-article-inner">
+        <div class="article-author-line">Por ${esc(n.autor || 'Redação SEEM')} · ${relTime(n.ts)}</div>
+        <div class="article-body">${corpoHtml(n.corpo)}</div>
+        ${shareButtonsHTML(n.titulo)}
+        <div id="comments-wrap-card-${n.ts}"></div>
+      </div>`;
+    bindShareButtons(art);
+    renderComentarios(n.ts, `comments-wrap-card-${n.ts}`);
+    art.classList.add('open'); art.setAttribute('aria-hidden', 'false');
+    btn.textContent = 'Fechar ▴'; btn.setAttribute('aria-expanded', 'true'); btn.classList.add('open');
+    openCards.add(n.ts);
+    setTimeout(() => art.scrollIntoView({ behavior: 'smooth', block: 'start' }), 80);
+  } else {
+    art.classList.remove('open'); art.setAttribute('aria-hidden', 'true');
+    btn.textContent = 'Leia mais ▾'; btn.setAttribute('aria-expanded', 'false'); btn.classList.remove('open');
+    openCards.delete(n.ts);
+  }
+}
+
+/* ═══ SCROLL INFINITO ═══
+   Mecanismo: #load-sentinel é uma <div> vazia no fim do feed.
+   Um único IntersectionObserver (sentinelIO) observa essa div: quando ela entra
+   na viewport (o utilizador rolou perto do fim), verificamos se ainda existem
+   notícias filtradas além das já exibidas (displayedCount). Se sim, mostramos
+   o spinner, chamamos renderFeed(false) — que adiciona o próximo lote de
+   PAGE_SIZE cards sem limpar os existentes — e escondemos o spinner.
+   rootMargin: '220px' faz o carregamento começar um pouco antes do sentinel
+   ficar 100% visível, evitando que o utilizador veja um "salto" no scroll. */
+const sentinelIO = new IntersectionObserver(async entries => {
+  if (!entries[0].isIntersecting) return;
+
+  const remaining = filteredNews.slice(1).length - displayedCount;
+
+  if (remaining > 0) {
+    // Ainda há notícias na memória — renderiza o próximo lote
+    const spinner = document.getElementById('load-spinner');
+    spinner.classList.add('active');
+    setTimeout(() => {
+      renderFeed(false);
+      spinner.classList.remove('active');
+    }, 350);
+  } else if (!semMaisNoFirebase) {
+    // Memória esgotada — busca mais no Firebase
+    const spinner = document.getElementById('load-spinner');
+    spinner.classList.add('active');
+    await fetchMaisNoticias();
+    renderFeed(false);
+    spinner.classList.remove('active');
+  }
+}, { rootMargin: '220px' });
+sentinelIO.observe(document.getElementById('load-sentinel'));
+
+/* ═══ COMENTÁRIOS ═══ */
+async function renderComentarios(ts, wrapId) {
+  const wrap = document.getElementById(wrapId);
+  if (!wrap) return;
+
+  wrap.innerHTML = `
+    <div class="comments-section">
+      <div class="comments-title">💬 Comentários</div>
+      <div class="comment-form">
+        <div class="comment-form-row">
+          <input type="text" class="comment-input comment-name"
+            placeholder="Seu nome (opcional)" aria-label="Seu nome"
+            value="${esc(userName)}" maxlength="40">
+        </div>
+        <div class="comment-form-row">
+          <textarea class="comment-input comment-textarea"
+            placeholder="Escreva um comentário…" aria-label="Comentário" maxlength="600"></textarea>
+          <button class="comment-submit-btn">Publicar</button>
+        </div>
+      </div>
+      <div class="comments-loading" id="cl-${ts}">A carregar comentários…</div>
+      <div class="comment-list" id="clist-${ts}"></div>
+    </div>`;
+
+  const nameInput  = wrap.querySelector('.comment-name');
+  const textarea   = wrap.querySelector('.comment-textarea');
+  const submitBtn  = wrap.querySelector('.comment-submit-btn');
+
+  // Preenche o campo nome se o utilizador estiver autenticado
+  if (currentUser?.displayName) {
+    nameInput.value = currentUser.displayName;
+    nameInput.readOnly = true;
+    nameInput.style.opacity = '0.6';
+    nameInput.title = 'Nome vem da tua conta Google';
+  }
+
+  // Salvar nome
+  nameInput.addEventListener('change', () => {
+    if (currentUser) return;
+    userName = nameInput.value.trim();
+    localStorage.setItem('seem_name', userName);
+  });
+
+  // Submit comentário
+  submitBtn.addEventListener('click', async () => {
+    const nome  = currentUser?.displayName || nameInput.value.trim() || 'Anónimo';
+    const texto = textarea.value.trim();
+    if (!texto) { showToast('Escreva algo primeiro.', ''); return; }
+    submitBtn.disabled = true; submitBtn.textContent = '…';
+    try {
+      await postComentario(ts, { nome, texto, ts: Date.now(), likes: 0, replies: [] });
+      textarea.value = '';
+      userName = nome; localStorage.setItem('seem_name', nome);
+      showToast('✅ Comentário publicado!', 'blue');
+      await carregarComentarios(ts, wrap);
+    } catch(e) { showToast('Erro ao publicar. Tente novamente.', 'red'); }
+    submitBtn.disabled = false; submitBtn.textContent = 'Publicar';
+  });
+
+  await carregarComentarios(ts, wrap);
+}
+
+async function carregarComentarios(ts, container) {
+  const listEl  = container.querySelector(`#clist-${ts}`);
+  const loadEl  = container.querySelector(`#cl-${ts}`);
+  if (!listEl) return;
+  try {
+    const lista = await fetchComentarios(ts);
+    loadEl?.remove();
+    if (!lista.length) {
+      listEl.innerHTML = '<div class="comments-empty">Seja o primeiro a comentar. 💬</div>';
+      return;
+    }
+    lista.sort((a, b) => b.ts - a.ts);
+    listEl.innerHTML = '';
+    lista.forEach(c => {
+      const div = document.createElement('div');
+      div.className = 'comment-item';
+      div.dataset.key = c._key;
+      const likedKey = `${ts}_${c._key}`;
+      const liked    = !!commentLikes[likedKey];
+      const repliesHTML = (c.replies || []).map(r => `
+        <div class="reply-item">
+          <span class="reply-author">${esc(r.nome || 'Anónimo')}</span>
+          <span style="color:var(--muted);font-size:10.5px;"> · ${relTime(r.ts)}</span>
+          <div>${esc(r.texto || '')}</div>
+        </div>`).join('');
+      div.innerHTML = `
+        <div class="comment-header">
+          <span class="comment-author">${esc(c.nome || 'Anónimo')}</span>
+          <span class="comment-time">${relTime(c.ts)}</span>
+        </div>
+        <div class="comment-text">${esc(c.texto || '')}</div>
+        <div class="comment-actions">
+          <button class="like-btn ${liked?'liked':''}" data-liked="${liked}" aria-label="Curtir">
+            ${liked?'♥':'♡'} <span class="like-count">${c.likes || 0}</span>
+          </button>
+          <button class="reply-toggle-btn" aria-expanded="false">↩ Responder</button>
+        </div>
+        <div class="replies-block" style="display:${(c.replies&&c.replies.length)?'flex':'none'}">
+          <div class="replies-list">${repliesHTML}</div>
+          <div class="reply-form" style="display:none;">
+            <input type="text" class="comment-input reply-author-input"
+              placeholder="Seu nome" value="${esc(userName)}" maxlength="40">
+            <input type="text" class="comment-input reply-text-input"
+              placeholder="Sua resposta…" maxlength="500">
+            <button>Enviar</button>
+          </div>
+        </div>`;
+      listEl.appendChild(div);
+
+      /* Like */
+      const likeBtn = div.querySelector('.like-btn');
+      likeBtn.addEventListener('click', async () => {
+        const wasLiked = likeBtn.dataset.liked === 'true';
+        const newLikes = (c.likes || 0) + (wasLiked ? -1 : 1);
+        likeBtn.classList.add('pulse');
+        setTimeout(() => likeBtn.classList.remove('pulse'), 300);
+        likeBtn.dataset.liked = !wasLiked;
+        likeBtn.classList.toggle('liked', !wasLiked);
+        likeBtn.querySelector('.like-count').textContent = newLikes;
+        likeBtn.childNodes[0].textContent = !wasLiked ? '♥ ' : '♡ ';
+        commentLikes[likedKey] = !wasLiked;
+        localStorage.setItem('seem_likes', JSON.stringify(commentLikes));
+        c.likes = newLikes;
+        try {
+          await fetch(`${FB}/comentarios/${ts}/${c._key}/likes.json`, {
+            method: 'PUT', body: JSON.stringify(newLikes),
+            headers: { 'Content-Type': 'application/json' }
+          });
+        } catch(e) {}
+      });
+
+      /* Reply toggle */
+      const replyToggle  = div.querySelector('.reply-toggle-btn');
+      const repliesBlock = div.querySelector('.replies-block');
+      const replyForm    = div.querySelector('.reply-form');
+      replyToggle.addEventListener('click', () => {
+        const exp = replyToggle.getAttribute('aria-expanded') === 'true';
+        replyToggle.setAttribute('aria-expanded', !exp);
+        repliesBlock.style.display = !exp ? 'flex' : 'none';
+        replyForm.style.display    = !exp ? 'flex' : 'none';
+      });
+
+      /* Submit reply */
+      div.querySelector('.reply-form button').addEventListener('click', async () => {
+        const rNome = div.querySelector('.reply-author-input').value.trim() || 'Anónimo';
+        const rText = div.querySelector('.reply-text-input').value.trim();
+        if (!rText) return;
+        const newReplies = [...(c.replies || []), { nome: rNome, texto: rText, ts: Date.now() }];
+        try {
+          await fetch(`${FB}/comentarios/${ts}/${c._key}/replies.json`, {
+            method: 'PUT', body: JSON.stringify(newReplies),
+            headers: { 'Content-Type': 'application/json' }
+          });
+          c.replies = newReplies;
+          div.querySelector('.replies-list').innerHTML = newReplies.map(r => `
+            <div class="reply-item">
+              <span class="reply-author">${esc(r.nome||'Anónimo')}</span>
+              <span style="color:var(--muted);font-size:10.5px;"> · ${relTime(r.ts)}</span>
+              <div>${esc(r.texto||'')}</div>
+            </div>`).join('');
+          div.querySelector('.reply-text-input').value = '';
+          showToast('↩ Resposta enviada!', 'blue');
+        } catch(e) { showToast('Erro ao enviar resposta.', 'red'); }
+      });
+    });
+  } catch(e) {
+    if (listEl) listEl.innerHTML = '<div class="comments-empty">Erro ao carregar comentários.</div>';
+  }
+}
+
+/* ═══ POLLING ═══
+   No poll só buscamos notícias com ts > maiorTsVisto (startAt),
+   limitadas a 10 — evita re-baixar o banco todo a cada intervalo. */
+let maiorTsVisto = 0;
+
+async function pollNews() {
+  let arr = [];
+  try {
+    const startAt = maiorTsVisto > 0 ? `&startAt=${maiorTsVisto + 1}` : '';
+    const url = `${FB}/noticias.json?orderBy="ts"&limitToLast=10${startAt}`;
+    const r = await fetch(url);
+    const d = await r.json();
+    if (d) arr = Object.values(d).filter(n => n && n.ts && n.titulo);
+  } catch(e) { return; }
+  if (!arr.length) return;
+  const novoMax = Math.max(...arr.map(n => n.ts));
+  const novel   = arr.filter(n => !knownKeys.has(n.ts));
+
+  if (novel.length) {
+    novel.forEach(n => knownKeys.add(n.ts));
+    allNews = [...novel, ...allNews];
+    applyFilter(); buildTicker(); updateStats(); renderVagasDestaque();
+
+    // Ordena as novas por mais recente e mostra um toast por notícia (máx. 3 de cada vez)
+    const novelSorted = [...novel].sort((a, b) => b.ts - a.ts);
+    novelSorted.slice(0, 3).forEach((n, i) => {
+      setTimeout(() => showNewsToast(n), i * 350);
+    });
+    if (novelSorted.length > 3) {
+      setTimeout(() => showToast(`+ ${novelSorted.length - 3} outra(s) notícia(s) nova(s).`, ''), 3 * 350 + 200);
+    }
+  }
+  maiorTsVisto = Math.max(maiorTsVisto, novoMax);
+}
+
+/* ═══ FALLBACK DATA (demo) ═══ */
+function getFallbackNews() {
+  const now = Date.now();
+  return [
+    {
+      ts: now - 300000, categoria: 'URGENTE', pais: 'Brasil',
+      titulo: 'Desemprego recua para mínimo histórico de 6,1% no Brasil',
+      subtitulo: 'Dados do IBGE divulgados esta manhã surpreendem analistas do mercado financeiro.',
+      corpo: 'O Instituto Brasileiro de Geografia e Estatística divulgou esta sexta-feira que a taxa de desemprego recuou para 6,1% no trimestre encerrado em maio.\n\nO número representa o menor patamar desde o início da série histórica, em 2012, e surpreendeu analistas que projetavam uma taxa de 6,5%.\n\nSegundo o IBGE, foram criados aproximadamente 850 mil empregos formais no período, com destaque para os setores de serviços e construção civil.',
+      imagem: 'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=1200&q=80',
+      autor: 'Redação SEEM', temperatura: 'muito'
+    },
+    {
+      ts: now - 900000, categoria: 'DEMISSÕES', pais: 'Portugal',
+      titulo: 'Banco confirma corte de 1.200 postos em Portugal',
+      subtitulo: 'Instituição culpa automação e queda nas margens de crédito para a decisão.',
+      corpo: 'Um grande banco português anunciou ontem ao mercado um plano de reestruturação que prevê a eliminação de 1.200 postos de trabalho nos próximos 18 meses.\n\nA direcção da instituição afirmou que a medida é inevitável face à crescente digitalização dos serviços bancários e à compressão das margens de crédito.\n\nOs sindicatos do setor já convocaram uma reunião de emergência para esta segunda-feira.',
+      imagem: 'https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?w=800&q=80',
+      autor: 'Redação SEEM', temperatura: 'quente'
+    },
+    {
+      ts: now - 1800000, categoria: 'VAGAS', pais: 'Angola',
+      titulo: 'Angola abre 4.500 vagas no sector público para jovens até 30 anos',
+      subtitulo: 'Concurso público foca em tecnologia, saúde e educação com salários acima da média.',
+      corpo: 'O Ministério da Administração Pública de Angola lançou hoje um concurso público para preenchimento de 4.500 vagas destinadas a jovens com idades entre 22 e 30 anos.\n\nAs vagas estão distribuídas entre as áreas de tecnologia da informação, saúde pública e educação.\n\nAs inscrições decorrem até 15 de agosto pelo portal nacional de emprego.',
+      imagem: 'https://images.unsplash.com/photo-1521791136064-7986c2920216?w=800&q=80',
+      autor: 'Redação SEEM', temperatura: 'fresca'
+    },
+    {
+      ts: now - 3600000, categoria: 'GREVES', pais: 'Moçambique',
+      titulo: 'Professores moçambicanos decretam greve por reajuste salarial de 40%',
+      subtitulo: 'Paralisação afeta mais de 600 escolas nas províncias de Maputo e Gaza.',
+      corpo: 'O Sindicato Nacional de Professores de Moçambique decretou greve por tempo indeterminado a partir de segunda-feira, exigindo um reajuste salarial de 40%.\n\nSegundo o sindicato, mais de 600 escolas nas províncias de Maputo e Gaza devem ser afetadas.\n\nO Ministério da Educação disse estar disponível para negociar.',
+      imagem: 'https://images.unsplash.com/photo-1509062522246-3755977927d7?w=800&q=80',
+      autor: 'Redação SEEM', temperatura: 'quente'
+    },
+    {
+      ts: now - 7200000, categoria: 'LEGISLAÇÃO', pais: 'Cabo Verde',
+      titulo: 'Cabo Verde aprova nova lei de teletrabalho com direito à desconexão digital',
+      subtitulo: 'Legislação pioneira no espaço lusófono garante proteção fora do horário de trabalho.',
+      corpo: 'A Assembleia Nacional de Cabo Verde aprovou, por unanimidade, a lei do teletrabalho que inclui o direito à desconexão digital fora do horário laboral.\n\nA lei proíbe empregadores de enviar mensagens a trabalhadores em regime remoto entre as 20h e as 8h, bem como aos fins de semana.\n\nCabo Verde torna-se assim o primeiro país africano de língua portuguesa a consagrar este direito em lei.',
+      imagem: 'https://images.unsplash.com/photo-1588196749597-9ff075ee6b5b?w=800&q=80',
+      autor: 'Redação SEEM', temperatura: 'fresca'
+    },
+    {
+      ts: now - 10800000, categoria: 'MUNDO', pais: 'Timor-Leste',
+      titulo: 'Timor-Leste inaugura primeiro parque tecnológico focado em empregos verdes',
+      subtitulo: 'Iniciativa conta com apoio de Portugal e Austrália e deve gerar 3.000 postos até 2027.',
+      corpo: 'Timor-Leste inaugurou o Centro de Inovação Verde de Díli, o primeiro parque tecnológico do país focado em empregos sustentáveis.\n\nO projeto, financiado por Portugal e Austrália, tem capacidade para acolher 120 startups e deve gerar 3.000 empregos diretos até 2027.',
+      imagem: 'https://images.unsplash.com/photo-1497435334941-8c899ee9e8e9?w=800&q=80',
+      autor: 'Redação SEEM', temperatura: 'fresca'
+    },
+    {
+      ts: now - 14400000, categoria: 'RECUPERAÇÃO', pais: 'Brasil',
+      titulo: 'Grupo logístico entra com pedido de recuperação judicial de R$ 2,3 bi',
+      subtitulo: 'Empresa alega crise de liquidez após inadimplência de três grandes clientes.',
+      corpo: 'Uma das maiores empresas de logística do país protocolou pedido de recuperação judicial com dívidas de R$ 2,3 bilhões.\n\nA empresa, que emprega diretamente 18.000 trabalhadores em 22 estados, atribui a crise ao calote de três grandes clientes do setor varejista.\n\nO tribunal de São Paulo tem 15 dias para deferir ou negar o pedido.',
+      imagem: 'https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=800&q=80',
+      autor: 'Redação SEEM', temperatura: 'muito'
+    },
+    {
+      ts: now - 18000000, categoria: 'VAGAS', pais: 'Portugal',
+      titulo: 'Portugal lança programa \"Tech Lusófono\" com 800 vagas para brasileiros',
+      subtitulo: 'Empresas de tecnologia oferecem salários entre €2.500 e €6.000 com visto facilitado.',
+      corpo: 'O Governo português lançou o programa \"Tech Lusófono\", uma parceria com 45 empresas tecnológicas que oferece 800 vagas para profissionais brasileiros de TI.\n\nOs candidatos selecionados recebem apoio para obtenção de visto de trabalho em prazo de 30 dias e auxílio-moradia nos primeiros três meses.',
+      imagem: 'https://images.unsplash.com/photo-1551434678-e076c223a692?w=800&q=80',
+      autor: 'Redação SEEM', temperatura: 'quente'
+    },
+    {
+      ts: now - 21600000, categoria: 'URGENTE', pais: 'Portugal',
+      titulo: 'Fábrica têxtil em Braga fecha portas e deixa 680 trabalhadores sem emprego',
+      subtitulo: 'Empresa de 93 anos alega concorrência desleal com importações asiáticas.',
+      corpo: 'A Têxteis Minho, com 93 anos de atividade em Braga, anunciou hoje o encerramento definitivo das suas operações, deixando 680 trabalhadores sem emprego.\n\nA administração culpa a concorrência de produtos asiáticos com preços subsidiados.\n\nO Ministério do Trabalho prometeu acionar medidas de apoio ao desemprego e reconversão profissional.',
+      imagem: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=80',
+      autor: 'Redação SEEM', temperatura: 'muito'
+    },
+    {
+      ts: now - 25200000, categoria: 'LEGISLAÇÃO', pais: 'Brasil',
+      titulo: 'Brasil regulamenta uso de IA no trabalho: empresas devem informar trabalhadores',
+      subtitulo: 'Resolução do MTE exige transparência quando sistemas automatizados são usados em RH.',
+      corpo: 'O Ministério do Trabalho e Emprego publicou resolução que obriga empresas a informar trabalhadores quando sistemas de inteligência artificial são utilizados em processos de contratação, avaliação de desempenho ou demissão.\n\nA norma entra em vigor em 90 dias e prevê o direito do trabalhador a uma explicação humana sobre decisões automatizadas.',
+      imagem: 'https://images.unsplash.com/photo-1677442135703-1787eea5ce01?w=800&q=80',
+      autor: 'Redação SEEM', temperatura: 'quente'
+    }
+  ];
+}
+
+/* ═══ COMPARTILHAR ═══
+   Compartilha a notícia usando a URL atual da página (SPA de página única).
+   O título da notícia vai no texto da mensagem para dar contexto ao link. */
+function shareToWhatsApp(titulo) {
+  const texto = titulo ? `${titulo} — ` : '';
+  const url = `https://wa.me/?text=${encodeURIComponent(texto + location.href)}`;
+  window.open(url, '_blank', 'noopener,noreferrer');
+}
+
+function shareToX(titulo) {
+  const texto = titulo || 'SEEM — Mercado de trabalho lusófono';
+  const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(texto)}&url=${encodeURIComponent(location.href)}`;
+  window.open(url, '_blank', 'noopener,noreferrer');
+}
+
+async function copyLink() {
+  try {
+    await navigator.clipboard.writeText(location.href);
+    showToast('🔗 Link copiado!', 'blue');
+  } catch (e) {
+    // Fallback para navegadores sem permissão/Clipboard API
+    const tmp = document.createElement('textarea');
+    tmp.value = location.href;
+    tmp.style.position = 'fixed'; tmp.style.opacity = '0';
+    document.body.appendChild(tmp);
+    tmp.select();
+    try { document.execCommand('copy'); showToast('🔗 Link copiado!', 'blue'); }
+    catch (e2) { showToast('Não foi possível copiar o link.', 'red'); }
+    tmp.remove();
+  }
+}
+
+/* Gera o bloco de botões de compartilhamento (usado no hero e nos cards).
+   O título vai em data-titulo (não em onclick inline) para evitar problemas
+   de escaping com aspas/apóstrofos no texto da notícia. */
+function shareButtonsHTML(titulo) {
+  return `
+    <div class="share-row" role="group" aria-label="Compartilhar notícia">
+      <span class="share-label">Compartilhar:</span>
+      <button type="button" class="share-btn share-whatsapp" data-titulo="${esc(titulo || '')}"
+        title="Compartilhar no WhatsApp" aria-label="Compartilhar no WhatsApp">📲</button>
+      <button type="button" class="share-btn share-x" data-titulo="${esc(titulo || '')}"
+        title="Compartilhar no X" aria-label="Compartilhar no X">𝕏</button>
+      <button type="button" class="share-btn share-copy"
+        title="Copiar link" aria-label="Copiar link">🔗</button>
+    </div>`;
+}
+
+/* Liga os cliques dos botões de compartilhamento dentro de um container.
+   Chamada depois de injetar shareButtonsHTML() no DOM (hero ou card). */
+function bindShareButtons(container) {
+  container.querySelector('.share-whatsapp')?.addEventListener('click', e => {
+    shareToWhatsApp(e.currentTarget.dataset.titulo);
+  });
+  container.querySelector('.share-x')?.addEventListener('click', e => {
+    shareToX(e.currentTarget.dataset.titulo);
+  });
+  container.querySelector('.share-copy')?.addEventListener('click', copyLink);
+}
+
+/* ═══ FIREBASE AUTH (Google) ═══ */
+import { initializeApp }        from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
+import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged }
+  from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
+
+const firebaseConfig = {
+  apiKey:            "AIzaSyCJzDXC_-obn4Sl-ndWgJEHWPO6YddmYRU",
+  authDomain:        "seem-new2.firebaseapp.com",
+  databaseURL:       "https://seem-new2-default-rtdb.firebaseio.com",
+  projectId:         "seem-new2",
+  storageBucket:     "seem-new2.firebasestorage.app",
+  messagingSenderId: "319997366415",
+  appId:             "1:319997366415:web:247e63d1172071ea7920fa",
+  measurementId:     "G-LYJ5CVFZ10"
+};
+
+const firebaseApp  = initializeApp(firebaseConfig);
+const auth         = getAuth(firebaseApp);
+const provider     = new GoogleAuthProvider();
+
+let currentUser = null;   // utilizador autenticado (ou null)
+
+// Observa mudanças de sessão
+onAuthStateChanged(auth, user => {
+  currentUser = user;
+  updateAuthUI(user);
+});
+
+function updateAuthUI(user) {
+  const btn    = document.getElementById('auth-btn');
+  const icon   = document.getElementById('auth-icon');
+  const label  = document.getElementById('auth-label');
+  const spinner= document.getElementById('auth-spinner');
+  spinner.style.display = 'none';
+  if (user) {
+    icon.innerHTML = user.photoURL
+      ? `<img src="${user.photoURL}" alt="${user.displayName || 'Utilizador'}">`
+      : '👤';
+    label.textContent = (user.displayName || user.email || 'Conta').split(' ')[0];
+    btn.title = `Sair (${user.email})`;
+  } else {
+    icon.innerHTML = '👤';
+    label.textContent = 'Entrar';
+    btn.title = 'Entrar com Google';
+  }
+}
+
+async function toggleAuth() {
+  const spinner = document.getElementById('auth-spinner');
+  const icon    = document.getElementById('auth-icon');
+  spinner.style.display = 'block';
+  icon.style.display    = 'none';
+  try {
+    if (currentUser) {
+      await signOut(auth);
+    } else {
+      await signInWithPopup(auth, provider);
+    }
+  } catch(e) {
+    if (e.code !== 'auth/popup-closed-by-user') {
+      showToast('Erro ao entrar. Tente novamente.', 'red');
+    }
+  }
+  icon.style.display    = '';
+  spinner.style.display = 'none';
+}
+
+document.getElementById('auth-btn').addEventListener('click', toggleAuth);
+
+/* ═══ INIT ═══ */
+// Deep-link: abre uma notícia específica quando a URL vem com ?noticia=TS
+const pendingDeepLinkNoticiaTs = Number(new URLSearchParams(window.location.search).get('noticia')) || null;
+
+async function init() {
+  // Fetch Firebase
+  allNews = await fetchNews();
+  if (!allNews.length) allNews = getFallbackNews();
+
+  allNews.forEach(n => knownKeys.add(n.ts));
+  if (allNews.length) maiorTsVisto = Math.max(...allNews.map(n => n.ts));
+
+  applyFilter();
+  buildTicker();
+  updateStats();
+  renderVagasDestaque();
+
+  if (pendingDeepLinkNoticiaTs) {
+    setTimeout(() => goToNoticia(pendingDeepLinkNoticiaTs), 350);
+  }
+
+  setInterval(pollNews,    POLL_NEWS);
+  setInterval(checkMaintenance, POLL_MAINT);
+}
+
+/* ═══ BUTTON PRESS FEEDBACK ═══ */
+document.addEventListener('click', e => {
+  const btn = e.target.closest('button');
+  if (!btn || btn.id === 'theme-toggle') return;
+  btn.style.transform = 'scale(0.96)';
+  setTimeout(() => { btn.style.transform = ''; }, 140);
+});
+
+init();
+</script>
+</body>
+</html>
