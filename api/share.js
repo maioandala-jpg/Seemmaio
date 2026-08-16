@@ -51,6 +51,12 @@ module.exports = async function handler(req, res) {
   const destino = ts
     ? `${SITE_URL}/?noticia=${encodeURIComponent(ts)}`
     : `${SITE_URL}/`;
+  // og:url precisa apontar para este mesmo endpoint (não para o site),
+  // senão o Facebook trata o site como "URL canônica" e vai buscar
+  // as informações lá — perdendo o título/imagem da notícia.
+  const urlPropria = ts
+    ? `${SITE_URL}/api/share?ts=${encodeURIComponent(ts)}`
+    : `${SITE_URL}/api/share`;
 
   const userAgent = String(req.headers['user-agent'] || '');
   const ehRobo = BOT_UA_REGEX.test(userAgent);
@@ -105,7 +111,7 @@ module.exports = async function handler(req, res) {
 <meta property="og:image" content="${escHtml(imagem)}">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:url" content="${escHtml(destino)}">
+<meta property="og:url" content="${escHtml(urlPropria)}">
 <meta property="og:locale" content="pt_BR">
 <meta property="og:site_name" content="SEEM">
 
