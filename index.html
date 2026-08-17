@@ -557,6 +557,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 .hero-overlay {
   position: absolute; inset: 0;
   background: linear-gradient(to top, rgba(0,0,0,0.96) 0%, rgba(0,0,0,0.55) 55%, rgba(0,0,0,0.08) 100%);
+  pointer-events: none; /* deixa o clique passar para a imagem/vídeo por baixo */
 }
 [data-theme="light"] .hero-overlay {
   background: linear-gradient(to top, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.5) 55%, rgba(0,0,0,0.04) 100%);
