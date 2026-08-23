@@ -1,4 +1,18 @@
 <!DOCTYPE html>
+<!--
+  ============================================================
+  SEEM — Só o que importa no mercado de trabalho lusófono
+  Criado e mantido por João Paulo Andala Júnior
+  Equipe: João Paulo Andala Júnior + Equipe SEEM
+  Data de criação: 2026
+
+  Licença: Copyright © 2026 João Paulo Andala Júnior.
+  Todos os direitos reservados. Este software é protegido por
+  copyright. Qualquer uso comercial, distribuição ou modificação
+  deve ser autorizada por escrito por João Paulo Andala Júnior
+  e sua equipe.
+  ============================================================
+-->
 <html lang="pt-BR" data-theme="dark">
 <head>
 <meta charset="UTF-8">
@@ -370,7 +384,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
   background: var(--bg3);
   border: 1px solid var(--border);
   border-radius: 20px;
-  padding: 7px 16px 7px 34px;
+  padding: 7px 32px 7px 34px;
   color: var(--text);
   font-size: 13px;
   font-family: var(--font);
@@ -379,6 +393,13 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 #search-input::placeholder { color: var(--muted); }
 #search-input:focus { border-color: var(--gold); box-shadow: 0 0 0 2px var(--gold-dim); outline: none; }
 .search-icon { position: absolute; left: 11px; top: 50%; transform: translateY(-50%); color: var(--muted); font-size: 13px; pointer-events: none; }
+#search-spinner {
+  position: absolute; right: 11px; top: 50%; transform: translateY(-50%);
+  width: 15px; height: 15px; display: none;
+  border: 2px solid var(--border); border-top-color: var(--gold);
+  border-radius: 50%; animation: spin 0.7s linear infinite;
+}
+#search-spinner.active { display: block; }
 
 /* Filters: país + setor */
 .header-selects {
@@ -716,6 +737,78 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 .share-whatsapp:hover { color: #22c55e; }
 .share-x:hover { color: var(--text); }
 .share-copy:hover { color: var(--blue); }
+
+/* ═══════════════════════════════════════════
+   RECOMENDAÇÃO — badge de transparência + ações
+═══════════════════════════════════════════ */
+.rec-reason {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-size: 10.5px; font-weight: 600; color: var(--gold-dark);
+  background: var(--gold-dim); border: 1px solid rgba(255,215,0,0.25);
+  border-radius: 20px; padding: 4px 10px; margin-bottom: 10px;
+  line-height: 1.3;
+}
+[data-theme="light"] .rec-reason { color: var(--gold-dark); }
+.rec-actions {
+  display: flex; align-items: center; gap: 8px; margin-top: 8px;
+}
+.rec-action-btn {
+  display: inline-flex; align-items: center; gap: 5px;
+  background: var(--bg3); border: 1px solid var(--border);
+  border-radius: 20px; padding: 6px 11px;
+  font-size: 12px; color: var(--muted); font-weight: 600;
+  transition: border-color 0.15s, color 0.15s, background 0.15s;
+}
+.rec-action-btn:hover { border-color: var(--gold-dark); color: var(--gold); }
+.rec-action-btn.active-like  { color: #e05; border-color: #e05; }
+.rec-action-btn.active-save  { color: var(--blue); border-color: var(--blue); }
+.card-wrap.card-dismissing {
+  opacity: 0; transform: scale(0.92) translateY(6px);
+  transition: opacity 0.28s, transform 0.28s;
+  pointer-events: none;
+}
+
+/* Botão + painel de personalização no header */
+.rec-settings-wrap { position: relative; }
+#rec-settings-btn {
+  width: 38px; height: 38px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--bg3); border: 1px solid var(--border);
+  font-size: 16px; transition: border-color 0.2s, transform 0.15s;
+}
+#rec-settings-btn:hover { border-color: var(--gold); transform: scale(1.1); }
+#rec-settings-btn.rec-off { opacity: 0.5; }
+.rec-panel {
+  position: absolute; top: calc(100% + 10px); right: 0;
+  width: 270px; background: var(--card-bg); border: 1px solid var(--border);
+  border-radius: 10px; box-shadow: var(--shadow); padding: 16px;
+  z-index: 60; display: none;
+}
+.rec-panel.open { display: block; }
+.rec-panel h4 { font-size: 12.5px; margin-bottom: 6px; color: var(--text); }
+.rec-panel p { font-size: 11.5px; color: var(--muted); line-height: 1.5; margin-bottom: 12px; }
+.rec-toggle-row {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 12px;
+}
+.rec-switch {
+  position: relative; width: 40px; height: 22px; flex-shrink: 0;
+  background: var(--bg3); border: 1px solid var(--border); border-radius: 20px;
+  cursor: pointer; transition: background 0.2s;
+}
+.rec-switch.on { background: var(--gold-dim); border-color: var(--gold); }
+.rec-switch-dot {
+  position: absolute; top: 2px; left: 2px; width: 16px; height: 16px;
+  border-radius: 50%; background: var(--muted); transition: left 0.2s, background 0.2s;
+}
+.rec-switch.on .rec-switch-dot { left: 20px; background: var(--gold); }
+.rec-panel-btn {
+  width: 100%; padding: 8px; border-radius: var(--radius);
+  background: var(--bg3); border: 1px solid var(--border);
+  font-size: 11.5px; font-weight: 700; color: var(--muted);
+  margin-top: 6px; transition: color 0.15s, border-color 0.15s;
+}
+.rec-panel-btn:hover { color: var(--red); border-color: var(--red); }
 
 /* ═══════════════════════════════════════════
    SECTION HEADER
@@ -1127,6 +1220,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
       <span class="search-icon" aria-hidden="true">🔍</span>
       <input type="search" id="search-input" placeholder="Buscar notícias…"
         autocomplete="off" aria-label="Buscar notícias">
+      <span id="search-spinner" aria-hidden="true"></span>
     </div>
 
     <!-- Filtros de país e setor -->
@@ -1169,6 +1263,18 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
         <span class="auth-icon" id="auth-icon">👤</span>
         <span id="auth-label">Entrar</span>
       </button>
+      <div class="rec-settings-wrap">
+        <button id="rec-settings-btn" aria-label="Preferências de recomendação" title="Preferências de recomendação" aria-haspopup="true" aria-expanded="false">🎯</button>
+        <div class="rec-panel" id="rec-panel" role="dialog" aria-label="Preferências de recomendação">
+          <h4>Recomendações personalizadas</h4>
+          <p>O SEEM usa o que lês, guardas e marcas como "não interessa" para destacar notícias mais relevantes para ti. O feed continua a mostrar notícias recentes e diversas — nunca só o que já conheces.</p>
+          <div class="rec-toggle-row">
+            <span style="font-size:12.5px;font-weight:600;">Personalização ativa</span>
+            <div class="rec-switch on" id="rec-switch" role="switch" aria-checked="true" tabindex="0"></div>
+          </div>
+          <button class="rec-panel-btn" id="rec-clear-btn" type="button">🗑️ Apagar histórico de interesses</button>
+        </div>
+      </div>
       <button id="theme-toggle" aria-label="Alternar tema claro/escuro">🌙</button>
     </div>
   </div>
@@ -1291,6 +1397,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
         <a href="#">Privacidade</a>
       </div>
       <div class="footer-copy">© <span id="ano-footer"></span> SEEM. Todos os direitos reservados.</div>
+      <div class="footer-copy" style="margin-top:6px;opacity:0.7;">By Andala</div>
     </div>
   </div>
 </footer>
@@ -1499,13 +1606,13 @@ function tempBadge(t) {
 
 function catBadgeClass(cat) {
   const c = (cat || '').toUpperCase();
-  if (c.includes('URGENTE'))    return 'badge-URGENTE';
-  if (c.includes('VAGA'))       return 'badge-VAGAS';
-  if (c.includes('DEMISS'))     return 'badge-DEMISSÕES';
-  if (c.includes('GREVE'))      return 'badge-GREVES';
-  if (c.includes('LEGISLA'))    return 'badge-LEGISLAÇÃO';
-  if (c.includes('RECUPE'))     return 'badge-RECUPERAÇÃO';
-  if (c.includes('MUNDO'))      return 'badge-MUNDO';
+  if (c.includes('URGENTE'))                        return 'badge-URGENTE';
+  if (c.includes('VAGA'))                            return 'badge-VAGAS';
+  if (c.includes('DEMISS'))                          return 'badge-DEMISSÕES';
+  if (c.includes('GREVE') || c.includes('CONFLITO')) return 'badge-GREVES';
+  if (c.includes('LEGISLA'))                         return 'badge-LEGISLAÇÃO';
+  if (c.includes('RECUPE') || c.includes('FALÊNCIA') || c.includes('FALENCIA') || c.includes('REESTRUTURA')) return 'badge-RECUPERAÇÃO';
+  if (c.includes('MUNDO'))                           return 'badge-MUNDO';
   return 'badge-default';
 }
 
@@ -1571,9 +1678,10 @@ checkMaintenance();
 setInterval(checkMaintenance, POLL_MAINT);
 
 /* ═══ FIREBASE FETCH ═══
-   Carga inicial: busca apenas as 30 notícias mais recentes.
-   O restante do banco é paginado sob demanda pelo scroll infinito
-   via fetchMaisNoticias(). */
+   Carga inicial: busca apenas as 30 notícias mais recentes, pra manter o
+   site rápido e leve. O restante do banco é carregado sob demanda, em
+   lotes de 30, conforme o usuário rola o feed e vai chegando perto do
+   fim — até esgotar todo o estoque de notícias do Firebase. */
 async function fetchNews() {
   try {
     const r = await fetch(`${FB}/noticias.json?orderBy="ts"&limitToLast=30`);
@@ -1585,31 +1693,67 @@ async function fetchNews() {
   } catch(e) { return []; }
 }
 
-/* Busca o próximo lote de 10 notícias mais antigas que o ts mínimo já carregado.
-   Chamada pelo scroll infinito quando allNews está esgotada. */
+/* Busca o próximo lote de até 30 notícias mais antigas que o ts mínimo já
+   carregado. Chamada pelo scroll infinito quando allNews está esgotada, e
+   também automaticamente quando um filtro de categoria/busca tem poucos
+   resultados nos dados já carregados (ver autoExpandIfNeeded).
+
+   PROTEÇÃO CONTRA "PARADA FALSA": se duas notícias publicadas muito rápido
+   uma da outra acabarem com o mesmo carimbo de tempo (ts), um lote buscado
+   pode vir 100% duplicado (já conhecido) mesmo havendo notícias mais
+   antigas ainda por buscar. Antes, isso fazia o site concluir errado que
+   "acabou" e travar em ~30 notícias pra sempre. Agora, quando um lote vem
+   inteiramente duplicado, tentamos de novo com o cursor um pouco mais pra
+   trás (até 5 vezes) antes de assumir que realmente não há mais nada. */
 async function fetchMaisNoticias() {
   if (buscandoMais || semMaisNoFirebase) return;
   buscandoMais = true;
   try {
-    const tsMin = allNews.length ? Math.min(...allNews.map(n => n.ts)) : Date.now();
-    const url   = `${FB}/noticias.json?orderBy="ts"&limitToLast=10&endAt=${tsMin - 1}`;
-    const r     = await fetch(url);
-    const d     = await r.json();
-    if (!d) { semMaisNoFirebase = true; return; }
+    let tsCursor = allNews.length ? Math.min(...allNews.map(n => n.ts)) : Date.now();
+    let tentativas = 0;
 
-    const lote = Object.values(d)
-      .filter(n => n && n.ts && n.titulo && !knownKeys.has(n.ts))
-      .sort((a, b) => b.ts - a.ts);
+    while (tentativas < 5) {
+      const url = `${FB}/noticias.json?orderBy="ts"&limitToLast=30&endAt=${tsCursor - 1}`;
+      const r   = await fetch(url);
+      const d   = await r.json();
 
-    if (!lote.length) { semMaisNoFirebase = true; return; }
+      if (!d) { semMaisNoFirebase = true; return; } // Firebase confirmou: não há nada mais antigo
 
-    lote.forEach(n => knownKeys.add(n.ts));
-    allNews = [...allNews, ...lote];
-    applyFilter();
+      const bruto = Object.values(d).filter(n => n && n.ts && n.titulo);
+      const lote  = bruto.filter(n => !knownKeys.has(n.ts));
 
-    if (lote.length < 10) semMaisNoFirebase = true;
+      if (lote.length) {
+        lote.forEach(n => knownKeys.add(n.ts));
+        allNews = [...allNews, ...lote];
+        recomputeFilteredNews(); // só atualiza a lista em memória, não mexe na tela
+        if (bruto.length < 30) semMaisNoFirebase = true; // veio menos que o pedido: chegamos ao início do histórico
+        return;
+      }
+
+      // Lote inteiro já conhecido (colisão de ts) — tenta um pouco mais pra trás
+      const tsMinBruto = bruto.length ? Math.min(...bruto.map(n => n.ts)) : tsCursor - 1;
+      if (tsMinBruto >= tsCursor) { semMaisNoFirebase = true; return; } // não anda mais, evita loop infinito
+      tsCursor = tsMinBruto;
+      tentativas++;
+    }
+    semMaisNoFirebase = true; // esgotou as tentativas de contornar a colisão
   } catch(e) {}
   finally { buscandoMais = false; }
+}
+
+/* Corrige o problema de abas de categoria "vazias": quando um filtro
+   (categoria ou busca) retorna poucos resultados dentro do que já está em
+   memória, isso não significa que não existam mais notícias daquele tipo —
+   só que elas ainda não foram carregadas (o site só busca 30 por vez, pra
+   ficar leve). Aqui, buscamos automaticamente mais lotes do Firebase até
+   juntar resultados suficientes ou esgotar todo o estoque, com um limite de
+   segurança pra não disparar buscas infinitas à toa. */
+async function autoExpandIfNeeded() {
+  let tentativas = 0;
+  while (filteredNews.length < PAGE_SIZE && !semMaisNoFirebase && tentativas < 8) {
+    await fetchMaisNoticias();
+    tentativas++;
+  }
 }
 
 async function fetchComentarios(ts) {
@@ -1641,22 +1785,413 @@ function buildTicker() {
 }
 
 /* ═══ FILTER + SEARCH ═══ */
-function applyFilter() {
+/* Mapeia as categorias reais salvas pelo painel admin (que usa texto livre,
+   tipo "Conflitos trabalhistas") para as tags fixas usadas pelas abas do site
+   (URGENTE, VAGAS, DEMISSÕES, GREVES, LEGISLAÇÃO, RECUPERAÇÃO, MUNDO).
+   Sem isso, abas como GREVES e RECUPERAÇÃO nunca encontravam nada porque o
+   texto salvo no Firebase não contém literalmente essas palavras. */
+function categoriaTags(n) {
+  try {
+    const c = (n.categoria || '').toUpperCase();
+    const tags = new Set();
+    if (c.includes('URGENTE'))                          tags.add('URGENTE');
+    if (c.includes('VAGA'))                              tags.add('VAGAS');
+    if (c.includes('DEMISS'))                            tags.add('DEMISSÕES');
+    if (c.includes('GREVE') || c.includes('CONFLITO'))   tags.add('GREVES');
+    if (c.includes('LEGISLA'))                           tags.add('LEGISLAÇÃO');
+    if (c.includes('RECUPE') || c.includes('FALÊNCIA') || c.includes('FALENCIA') || c.includes('REESTRUTURA')) tags.add('RECUPERAÇÃO');
+    if (c.includes('MUNDO') || (n.pais || '').toUpperCase() === 'INTERNACIONAL') tags.add('MUNDO');
+    if (n.temperatura === 'muito') tags.add('URGENTE');
+    return tags;
+  } catch (err) {
+    console.error('categoriaTags falhou para:', n, err);
+    return new Set();
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   SISTEMA DE RECOMENDAÇÃO — SEEM
+   ═══════════════════════════════════════════════════════════════════
+   Objetivo: ordenar o feed por utilidade e relevância para cada
+   utilizador, sem maximizar tempo de ecrã nem criar bolha de
+   informação. Nunca decide SE uma notícia aparece (isso é dos filtros
+   e da pesquisa) — só a ORDEM em que aparece, depois dos filtros.
+
+   Fases implementadas: 1 (regras: categoria/país/setor/atualidade/
+   vistas) + 2 (comportamento: tempo de leitura, gostos, guardados,
+   partilhas, rejeições). Fases 3-5 (similaridade, colaborativo,
+   testes A/B) ficam documentadas no ficheiro RECOMENDACAO.md.
+   ═══════════════════════════════════════════════════════════════════ */
+
+const REC_KEY_PERFIL   = 'seem_rec_perfil';
+const REC_KEY_VISTOS   = 'seem_rec_vistos';
+const REC_KEY_NAOINT   = 'seem_rec_naointeresse';
+const REC_KEY_GOSTEI   = 'seem_rec_gostei';
+const REC_KEY_GUARDADO = 'seem_rec_guardados';
+const REC_KEY_ENABLED  = 'seem_rec_enabled';
+const REC_MAX_VISTOS   = 400; // limite pra não crescer infinitamente no localStorage
+
+/* Pesos por tipo de evento — usados para atualizar o perfil de interesses.
+   Valores negativos representam sinais de desinteresse. */
+const REC_PESOS = {
+  view: 0.5, open: 1, read_time: 0, complete: 3,
+  like: 4, save: 4, share: 5, search: 2, not_interested: -6
+};
+
+function recCarregarJSON(key, fallback) {
+  try { return JSON.parse(localStorage.getItem(key)) ?? fallback; }
+  catch { return fallback; }
+}
+
+let recPerfil = recCarregarJSON(REC_KEY_PERFIL, { categorias: {}, paises: {}, setores: {} });
+let recVistos = new Set(recCarregarJSON(REC_KEY_VISTOS, []));
+let recNaoInteressa = new Set(recCarregarJSON(REC_KEY_NAOINT, []));
+let recGostei = new Set(recCarregarJSON(REC_KEY_GOSTEI, []));
+let recGuardados = new Set(recCarregarJSON(REC_KEY_GUARDADO, []));
+let recEnabled = recCarregarJSON(REC_KEY_ENABLED, true);
+let recSyncTimeout = null;
+
+function recSalvarPerfil() {
+  localStorage.setItem(REC_KEY_PERFIL, JSON.stringify(recPerfil));
+  localStorage.setItem(REC_KEY_VISTOS, JSON.stringify([...recVistos].slice(-REC_MAX_VISTOS)));
+  localStorage.setItem(REC_KEY_NAOINT, JSON.stringify([...recNaoInteressa]));
+  localStorage.setItem(REC_KEY_GOSTEI, JSON.stringify([...recGostei]));
+  localStorage.setItem(REC_KEY_GUARDADO, JSON.stringify([...recGuardados]));
+
+  /* Utilizadores autenticados: sincroniza uma cópia mínima e não-sensível
+     do perfil no Firebase (Realtime Database), para poder ser usada
+     noutro dispositivo. Nunca guarda nome, email, IP ou texto lido —
+     só as pontuações agregadas por categoria/país/setor. Debounced para
+     não escrever no Firebase a cada clique. */
+  clearTimeout(recSyncTimeout);
+  recSyncTimeout = setTimeout(() => {
+    if (typeof currentUser !== 'undefined' && currentUser?.uid) {
+      fetch(`${FB}/perfis/${currentUser.uid}.json`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ...recPerfil, atualizadoEm: Date.now() })
+      }).catch(() => {});
+    }
+  }, 1500);
+}
+
+/* 1) registarEvento() — regista uma interação e atualiza o perfil.
+   Não trata cliques acidentais como interesse: "view" (card apareceu no
+   ecrã) recebe peso baixo; "complete" e "read_time" só disparam quando
+   houve tempo real de leitura ativa. */
+function registarEvento(noticia, evento, meta = {}) {
+  if (!noticia) return; // eventos sem notícia associada (ex: pesquisa) não tocam no perfil por notícia
+  atualizarPerfil(noticia, evento, meta);
+}
+
+/* 2) atualizarPerfil() — soma o peso do evento às categorias/país/setor
+   da notícia. Pontuações são cumulativas mas moderadas (sem teto rígido)
+   porque o cálculo do score já normaliza pela atualidade e diversidade. */
+function atualizarPerfil(noticia, evento, meta = {}) {
+  const peso = (evento === 'read_time')
+    ? Math.min(3, (meta.segundos || 0) / 20) // até 3 pontos por leitura longa e ativa
+    : (REC_PESOS[evento] || 0);
+
+  if (!peso) { if (evento !== 'read_time') return; }
+
+  const tags = categoriaTags(noticia);
+  tags.forEach(tag => {
+    recPerfil.categorias[tag] = (recPerfil.categorias[tag] || 0) + peso;
+  });
+  if (noticia.pais) {
+    recPerfil.paises[noticia.pais] = (recPerfil.paises[noticia.pais] || 0) + peso;
+  }
+  const setor = (noticia.setor || '').toLowerCase();
+  if (setor) {
+    recPerfil.setores[setor] = (recPerfil.setores[setor] || 0) + peso;
+  }
+  recSalvarPerfil();
+}
+
+/* 3) calcularPontuacao() — pontuação de uma notícia para o utilizador atual.
+   pontuação = 3×categoria + 2×país + 2×setor + atualidade + qualidade
+             + novidade − repetição − rejeições anteriores               */
+function calcularPontuacao(n, contexto) {
+  const tags = [...categoriaTags(n)];
+  const afinCategoria = tags.reduce((s, t) => s + (recPerfil.categorias[t] || 0), 0);
+  const afinPais   = recPerfil.paises[n.pais || ''] || 0;
+  const setor      = (n.setor || '').toLowerCase();
+  const afinSetor  = recPerfil.setores[setor] || 0;
+
+  const horas = Math.max(0, (Date.now() - (n.ts || 0)) / 36e5);
+  const atualidade = Math.max(0, 8 - horas / 5); // decai ao longo de ~40h
+
+  // "Qualidade da fonte": proxy simples enquanto não há avaliação editorial
+  // por fonte — notícias com autor identificado e corpo mais completo
+  // pontuam um pouco mais. Pode ser substituído por uma tabela de
+  // confiabilidade por fonte no futuro (ver RECOMENDACAO.md).
+  const qualidade = (n.autor ? 0.5 : 0) + Math.min(1.5, (n.corpo?.length || 0) / 1200);
+
+  const novidade = recVistos.has(n.ts) ? 0 : 1.5;
+  const repeticao = recVistos.has(n.ts) ? -3 : 0;
+  const rejeicao  = recNaoInteressa.has(n.ts) ? -50 : 0; // praticamente remove do topo
+
+  // Penalização de diversidade: reduz notícias muito parecidas com as
+  // últimas já escolhidas para a mesma "janela" do feed.
+  let diversidade = 0;
+  if (contexto?.janela?.length) {
+    const repetidas = contexto.janela.filter(c => tags.some(t => c.has(t))).length;
+    diversidade = -repetidas * 1.2;
+  }
+
+  return afinCategoria * 3 + afinPais * 2 + afinSetor * 2
+       + atualidade + qualidade + novidade + repeticao + rejeicao + diversidade;
+}
+
+/* Frase de transparência: "Recomendado porque leste sobre X em Y" */
+function explicarRecomendacao(n, motivo) {
+  if (motivo === 'recente')     return '🕐 Recente e relevante';
+  if (motivo === 'diversidade') return '🔀 Para diversificar o teu feed';
+  if (motivo === 'descoberta')  return '✨ Descoberta para ti';
+  const tags = [...categoriaTags(n)];
+  const melhorTag = tags.sort((a,b) => (recPerfil.categorias[b]||0) - (recPerfil.categorias[a]||0))[0];
+  if (melhorTag && (recPerfil.categorias[melhorTag] || 0) > 1) {
+    if (n.pais && (recPerfil.paises[n.pais] || 0) > 1) {
+      return `🎯 Porque lês sobre ${melhorTag.toLowerCase()} em ${n.pais}`;
+    }
+    return `🎯 Porque lês sobre ${melhorTag.toLowerCase()}`;
+  }
+  if (n.pais && (recPerfil.paises[n.pais] || 0) > 1) return `🎯 Porque acompanhas ${n.pais}`;
+  return null;
+}
+
+/* 4) diversificarFeed() — não deixa mais de 2 notícias seguidas da
+   mesma categoria/país, para reduzir a bolha de informação. */
+function diversificarFeed(lista) {
+  const resultado = [];
+  const fila = [...lista];
+  const janela = []; // últimas categorias colocadas
+
+  while (fila.length) {
+    let idx = fila.findIndex(n => {
+      const tags = categoriaTags(n);
+      const repetidoDemais = janela.slice(-2).every(j => [...tags].some(t => j.has(t))) && janela.length >= 2;
+      return !repetidoDemais;
+    });
+    if (idx === -1) idx = 0; // não há alternativa: aceita repetição pra não travar
+    const [n] = fila.splice(idx, 1);
+    resultado.push(n);
+    janela.push(categoriaTags(n));
+    if (janela.length > 3) janela.shift();
+  }
+  return resultado;
+}
+
+/* 5) obterRecomendacoes() / recomendarNoticias() — aplica o feed híbrido:
+   60% afinidade, 20% recente/importante, 15% categorias diferentes,
+   5% descoberta aleatória. Não reordena resultados de pesquisa (a
+   pesquisa deve respeitar relevância textual + recência, não o perfil). */
+function recomendarNoticias(lista) {
+  if (!recEnabled || lista.length < 6) return lista.map(n => ({ n, motivo: null }));
+
+  const pontuadas = lista.map(n => ({ n, score: calcularPontuacao(n) }));
+  pontuadas.sort((a, b) => b.score - a.score);
+
+  const total = pontuadas.length;
+  const nAfin = Math.round(total * 0.60);
+  const nRecente = Math.round(total * 0.20);
+  const nDiverso = Math.round(total * 0.15);
+
+  const usados = new Set();
+  const blocoAfin = pontuadas.slice(0, nAfin).map(p => (usados.add(p.n.ts), { n: p.n, motivo: 'afinidade' }))
+    .map(x => x); // marca já usados via side-effect acima
+
+  const restantes1 = pontuadas.filter(p => !usados.has(p.n.ts));
+  const blocoRecente = [...restantes1].sort((a, b) => b.n.ts - a.n.ts).slice(0, nRecente)
+    .map(p => (usados.add(p.n.ts), { n: p.n, motivo: 'recente' }));
+
+  const restantes2 = pontuadas.filter(p => !usados.has(p.n.ts));
+  // categorias diferentes: prioriza tags menos presentes no perfil
+  const blocoDiverso = [...restantes2]
+    .sort((a, b) => {
+      const tagsA = [...categoriaTags(a.n)], tagsB = [...categoriaTags(b.n)];
+      const afinA = tagsA.reduce((s,t)=>s+(recPerfil.categorias[t]||0),0);
+      const afinB = tagsB.reduce((s,t)=>s+(recPerfil.categorias[t]||0),0);
+      return afinA - afinB; // menor afinidade primeiro = mais diverso
+    })
+    .slice(0, nDiverso)
+    .map(p => (usados.add(p.n.ts), { n: p.n, motivo: 'diversidade' }));
+
+  const restantes3 = pontuadas.filter(p => !usados.has(p.n.ts));
+  const blocoDescoberta = restantes3
+    .sort(() => Math.random() - 0.5)
+    .map(p => ({ n: p.n, motivo: 'descoberta' }));
+
+  // intercala os blocos em vez de concatenar em sequência, pra não
+  // criar uma "parede" de 60% do mesmo tipo seguida de outra parede
+  const blocos = [blocoAfin, blocoRecente, blocoDiverso, blocoDescoberta];
+  const proporcoes = [0.60, 0.20, 0.15, 0.05];
+  const misturado = [];
+  const ponteiros = [0, 0, 0, 0];
+  const totalAlvo = blocoAfin.length + blocoRecente.length + blocoDiverso.length + blocoDescoberta.length;
+
+  for (let i = 0; i < totalAlvo; i++) {
+    // escolhe o bloco cuja proporção ainda está mais "em falta"
+    let melhorBloco = 0, melhorDeficit = -Infinity;
+    for (let b = 0; b < 4; b++) {
+      if (ponteiros[b] >= blocos[b].length) continue;
+      const alvo = (i + 1) * proporcoes[b];
+      const deficit = alvo - ponteiros[b];
+      if (deficit > melhorDeficit) { melhorDeficit = deficit; melhorBloco = b; }
+    }
+    if (ponteiros[melhorBloco] < blocos[melhorBloco].length) {
+      misturado.push(blocos[melhorBloco][ponteiros[melhorBloco]]);
+      ponteiros[melhorBloco]++;
+    }
+  }
+
+  return misturado;
+}
+
+function obterRecomendacoes(lista) {
+  if (!recEnabled) {
+    // Personalização desligada: mantém a ordem cronológica original, sem
+    // diversificação nem motivos — é o feed "cru".
+    return lista.map(n => Object.assign(n, { _motivo: null }));
+  }
+  const combinadas = recomendarNoticias(lista);
+  const ordemFinal = diversificarFeed(combinadas.map(c => c.n));
+  const motivoPorTs = new Map(combinadas.map(c => [c.n.ts, c.motivo]));
+  return ordemFinal.map(n => Object.assign(n, { _motivo: motivoPorTs.get(n.ts) || null }));
+}
+
+/* 6) marcarComoVista() — chamada quando o card entra na viewport. */
+function marcarComoVista(n) {
+  if (recVistos.has(n.ts)) return;
+  recVistos.add(n.ts);
+  registarEvento(n, 'view');
+}
+
+/* marcarComoGuardada() — alterna "guardar para ler depois". */
+function marcarComoGuardada(n) {
+  const jaGuardada = recGuardados.has(n.ts);
+  if (jaGuardada) recGuardados.delete(n.ts); else recGuardados.add(n.ts);
+  registarEvento(n, jaGuardada ? 'view' : 'save');
+  recSalvarPerfil();
+  return !jaGuardada;
+}
+
+function marcarComoGostei(n) {
+  const jaGostou = recGostei.has(n.ts);
+  if (jaGostou) recGostei.delete(n.ts); else recGostei.add(n.ts);
+  registarEvento(n, jaGostou ? 'view' : 'like');
+  recSalvarPerfil();
+  return !jaGostou;
+}
+
+/* marcarComoNaoInteressante() — sinal forte de desinteresse; some do topo
+   das recomendações e some visualmente do card imediatamente. */
+function marcarComoNaoInteressante(n, wrapEl) {
+  recNaoInteressa.add(n.ts);
+  registarEvento(n, 'not_interested');
+  recSalvarPerfil();
+  if (wrapEl) {
+    wrapEl.classList.add('card-dismissing');
+    setTimeout(() => wrapEl.remove(), 300);
+  }
+  showToast('Obrigado — vamos mostrar menos notícias assim.', 'blue');
+}
+
+/* Painel de preferências (header) */
+function recAtualizarBotaoHeader() {
+  document.getElementById('rec-settings-btn')?.classList.toggle('rec-off', !recEnabled);
+  const sw = document.getElementById('rec-switch');
+  if (sw) { sw.classList.toggle('on', recEnabled); sw.setAttribute('aria-checked', recEnabled); }
+}
+
+function recToggleEnabled() {
+  recEnabled = !recEnabled;
+  localStorage.setItem(REC_KEY_ENABLED, JSON.stringify(recEnabled));
+  recAtualizarBotaoHeader();
+  applyFilter();
+  showToast(recEnabled ? '🎯 Personalização ativada' : '🎯 Personalização desativada — feed cronológico', 'blue');
+}
+
+document.getElementById('rec-settings-btn')?.addEventListener('click', e => {
+  e.stopPropagation();
+  const panel = document.getElementById('rec-panel');
+  const open = panel.classList.toggle('open');
+  document.getElementById('rec-settings-btn').setAttribute('aria-expanded', open);
+});
+document.addEventListener('click', e => {
+  const wrap = document.querySelector('.rec-settings-wrap');
+  if (wrap && !wrap.contains(e.target)) document.getElementById('rec-panel')?.classList.remove('open');
+});
+document.getElementById('rec-switch')?.addEventListener('click', recToggleEnabled);
+document.getElementById('rec-switch')?.addEventListener('keydown', e => {
+  if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); recToggleEnabled(); }
+});
+document.getElementById('rec-clear-btn')?.addEventListener('click', () => {
+  recPerfil = { categorias: {}, paises: {}, setores: {} };
+  recVistos.clear(); recNaoInteressa.clear(); recGostei.clear(); recGuardados.clear();
+  recSalvarPerfil();
+  applyFilter();
+  showToast('🗑️ Histórico de interesses apagado.', 'blue');
+});
+recAtualizarBotaoHeader();
+
+/* Recalcula apenas QUAIS notícias combinam com o filtro/busca atual —
+   sem tocar na tela. Usada durante o carregamento automático do scroll
+   infinito, pra acrescentar as notícias antigas à lista sem apagar e
+   reconstruir o feed inteiro (o que causava o "salto pra trás" no scroll,
+   fazendo o usuário perder a posição e ver notícias repetidas). */
+function recomputeFilteredNews() {
   const q = searchQuery.toLowerCase();
   filteredNews = allNews.filter(n => {
-    const catMatch  = activeFilter === 'TODOS' || (n.categoria || '').toUpperCase().includes(activeFilter.toUpperCase());
+    const catMatch  = q || activeFilter === 'TODOS' || categoriaTags(n).has(activeFilter);
     const paisMatch = !filterPais  || (n.pais || '') === filterPais;
     const setorMatch= !filterSetor || ((n.setor || n.corpo || '').toLowerCase().includes(filterSetor));
-    const txtMatch  = !q || (n.titulo||'').toLowerCase().includes(q) || (n.subtitulo||'').toLowerCase().includes(q);
+    const txtMatch  = !q || (n.titulo||'').toLowerCase().includes(q) || (n.subtitulo||'').toLowerCase().includes(q) || (n.corpo||'').toLowerCase().includes(q);
     return catMatch && paisMatch && setorMatch && txtMatch;
   });
+}
+
+/* Reconstrói a tela do zero — chamada só quando o usuário troca de aba,
+   pesquisa ou muda filtro de propósito. NUNCA deve ser chamada durante o
+   carregamento automático do scroll infinito (use recomputeFilteredNews +
+   renderFeed(false) pra isso). */
+function applyFilter() {
+  const q = searchQuery.toLowerCase();
+  /* Quando há texto de busca, a pesquisa deve varrer TODO o site, não só
+     a categoria/aba ativa no momento — antes disso, pesquisar "Nestlé"
+     estando na aba "Vagas" não achava nada, porque a notícia da Nestlé
+     está na categoria "Falências/reestruturações". Agora, com busca ativa,
+     a categoria deixa de restringir o resultado. */
+  recomputeFilteredNews();
+
+  /* Ordenação inteligente: só reordena quando NÃO há pesquisa ativa — uma
+     pesquisa deve devolver resultados por relevância textual/recência, não
+     pelo perfil de interesses. É segura aqui (mas não dentro de
+     recomputeFilteredNews) porque applyFilter sempre reconstrói o feed do
+     zero, então mudar a ordem não quebra o scroll infinito. */
+  if (!q && filteredNews.length > 1) {
+    filteredNews = obterRecomendacoes(filteredNews);
+  }
 
   displayedCount = 0;
   document.getElementById('feed').innerHTML = '';
   openCards.clear();
 
-  const label = activeFilter === 'TODOS' ? 'Últimas notícias' :
-    activeFilter.charAt(0) + activeFilter.slice(1).toLowerCase();
+  /* Se o usuário está pesquisando, a aba visualmente ativa (ex: "Vagas")
+     não reflete mais os resultados reais (que agora vêm de todas as
+     categorias) — voltamos a aba visual para "Todas" pra não confundir. */
+  if (q && activeFilter !== 'TODOS') {
+    activeFilter = 'TODOS';
+    document.querySelectorAll('.nav-btn').forEach(b => {
+      const isAll = b.dataset.cat === 'TODOS';
+      b.classList.toggle('active', isAll);
+      b.setAttribute('aria-pressed', isAll ? 'true' : 'false');
+    });
+  }
+
+  const label = q ? `Resultados para "${searchQuery}"` :
+    (activeFilter === 'TODOS' ? 'Últimas notícias' :
+    activeFilter.charAt(0) + activeFilter.slice(1).toLowerCase());
   document.getElementById('feed-label').textContent = label;
   document.getElementById('feed-count').textContent =
     `${filteredNews.length} notícia${filteredNews.length !== 1 ? 's' : ''}`;
@@ -1711,7 +2246,7 @@ function updateStats() {
   document.getElementById('stat-demissoes').textContent =
     allNews.filter(n => (n.categoria||'').includes('DEMISS')).length || '—';
   document.getElementById('stat-greves').textContent =
-    allNews.filter(n => (n.categoria||'').includes('GREVE')).length || '—';
+    allNews.filter(n => /GREVE|CONFLITO/i.test(n.categoria||'')).length || '—';
   document.getElementById('stat-total').textContent = todayNews.length || allNews.length || '—';
 }
 
@@ -1724,14 +2259,59 @@ document.querySelectorAll('.nav-btn').forEach(btn => {
     btn.classList.add('active'); btn.setAttribute('aria-pressed', 'true');
     activeFilter = btn.dataset.cat;
     applyFilter();
+    if (activeFilter !== 'TODOS') autoExpandIfNeeded();
+
+    /* Ao trocar de categoria, o CONTEÚDO reseta certinho pro início (via
+       applyFilter), mas antes a posição de SCROLL da página continuava
+       onde estava. Se o usuário tinha rolado bastante em "Todas", ele
+       continuava "lá embaixo" ao trocar de aba — dando a impressão de que
+       a categoria nova já abria a partir da notícia 30. Agora a página
+       volta suavemente pro topo do feed a cada troca de categoria. */
+    const hero = document.getElementById('hero');
+    if (hero) hero.scrollIntoView({ behavior: 'smooth', block: 'start' });
   });
 });
 
-/* ═══ SEARCH ═══ */
+/* ═══ SEARCH ═══
+   Antes, a busca só filtrava dentro de allNews — que começa com apenas 30
+   notícias e só cresce conforme o usuário rola o feed. Isso fazia a busca
+   "não achar" notícias antigas que ainda não tinham sido carregadas na
+   memória. Agora, na primeira vez que o usuário digita algo, buscamos o
+   banco inteiro do Firebase de uma vez (até 1000 notícias, suficiente pra
+   o volume atual do site), pra busca sempre olhar o site completo. */
+let searchFullLoadDone = false;
+async function ensureFullDatasetForSearch() {
+  if (searchFullLoadDone) return;
+  try {
+    const r = await fetch(`${FB}/noticias.json?orderBy="ts"&limitToLast=1000`);
+    const d = await r.json();
+    if (d) {
+      Object.values(d)
+        .filter(n => n && n.ts && n.titulo && !knownKeys.has(n.ts))
+        .forEach(n => { knownKeys.add(n.ts); allNews.push(n); });
+      allNews.sort((a, b) => b.ts - a.ts);
+    }
+    semMaisNoFirebase = true; // já temos tudo carregado, scroll infinito não precisa mais buscar
+  } catch(e) {}
+  finally { searchFullLoadDone = true; }
+}
+
 let searchTimer;
 document.getElementById('search-input').addEventListener('input', e => {
   clearTimeout(searchTimer);
-  searchTimer = setTimeout(() => { searchQuery = e.target.value.trim(); applyFilter(); }, 260);
+  const spinner = document.getElementById('search-spinner');
+  if (e.target.value.trim()) spinner.classList.add('active');
+  else spinner.classList.remove('active');
+
+  searchTimer = setTimeout(async () => {
+    searchQuery = e.target.value.trim();
+    if (searchQuery) {
+      document.getElementById('feed-label').textContent = 'Buscando…';
+      await ensureFullDatasetForSearch();
+    }
+    applyFilter();
+    spinner.classList.remove('active');
+  }, 260);
 });
 
 /* ═══ SELECTS (país / setor) ═══ */
@@ -1754,7 +2334,31 @@ function renderHero() {
   const n = filteredNews[0];
   const sk = document.getElementById('hero-skeleton');
 
-  if (!n) { sk.style.display = 'flex'; return; }
+  if (!n) {
+    /* Antes disso, uma categoria sem nenhuma notícia ficava com a tela de
+       carregamento visível pra sempre (parecendo travado). Agora, se os
+       dados já carregaram (allNews.length > 0) mas essa categoria específica
+       não tem nada, mostramos uma mensagem de vazio real em vez de skeleton. */
+    if (allNews.length > 0) {
+      sk.style.display = 'none';
+      const heroSection = sk.closest('.hero') || sk.parentElement;
+      let emptyBox = document.getElementById('hero-empty-state');
+      if (!emptyBox) {
+        emptyBox = document.createElement('div');
+        emptyBox.id = 'hero-empty-state';
+        emptyBox.className = 'empty-state';
+        emptyBox.innerHTML = '<div class="empty-state-icon">📭</div><div class="empty-state-text">Nenhuma notícia encontrada nesta categoria ainda.</div>';
+        (heroSection || sk.parentElement).appendChild(emptyBox);
+      }
+      emptyBox.style.display = 'flex';
+    } else {
+      sk.style.display = 'flex';
+    }
+    return;
+  }
+
+  const existingEmpty = document.getElementById('hero-empty-state');
+  if (existingEmpty) existingEmpty.style.display = 'none';
 
   heroNoticia = n;
   sk.style.display = 'none';
@@ -1768,6 +2372,7 @@ function renderHero() {
 
   const body = document.getElementById('hero-body');
   const tb   = tempBadge(n.temperatura);
+  const motivo = recEnabled ? explicarRecomendacao(n, n._motivo) : null;
 
   body.innerHTML = `
     <div class="badges-row">
@@ -1775,6 +2380,7 @@ function renderHero() {
       ${tb ? `<span class="temp-badge">${tb}</span>` : ''}
       <span class="country-badge">${countryFlag(n.pais)} ${esc(n.pais || '')}</span>
     </div>
+    ${motivo ? `<span class="rec-reason">${esc(motivo)}</span>` : ''}
     <h1 class="hero-title" id="hero-title-el"></h1>
     <p class="hero-sub">${esc(n.subtitulo || '')}</p>
     <div class="hero-meta">
@@ -1790,6 +2396,8 @@ function renderHero() {
     </button>
   `;
 
+  marcarComoVista(n);
+
   // Dispara o typewriter no título a cada notícia nova exibida no hero
   const titleEl = document.getElementById('hero-title-el');
   typewriter(titleEl, n.titulo || '');
@@ -1804,7 +2412,10 @@ function renderHero() {
     btn.textContent = heroOpen ? 'Fechar ▴' : 'Leia agora ▾';
     if (heroOpen) {
       populateHeroArticle(n);
+      registarEvento(n, 'open');
       setTimeout(() => exp.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100);
+    } else {
+      recPararLeituraAtiva(n);
     }
   });
 
@@ -1822,11 +2433,14 @@ function populateHeroArticle(n) {
   inner.innerHTML = `
     <div class="article-author-line">Por ${esc(n.autor || 'Redação SEEM')} · ${relTime(n.ts)}</div>
     <div class="article-body">${corpoHtml(n.corpo)}</div>
+    ${recEngagementRowHTML(n)}
     ${shareButtonsHTML(n.titulo)}
     <div id="comments-wrap-hero-${n.ts}"></div>
   `;
-  bindShareButtons(inner);
+  bindShareButtons(inner, n);
+  bindRecActions(inner, n);
   renderComentarios(n.ts, `comments-wrap-hero-${n.ts}`);
+  recIniciarLeituraAtiva(n, inner.querySelector('.article-body'));
 }
 
 /* ═══ RENDER DO FEED (cards) ═══
@@ -1860,19 +2474,57 @@ function renderFeed(reset) {
     wrap.innerHTML = cardHTML(n);
     feed.appendChild(wrap);
 
-    // Fade-in on scroll
+    // Fade-in on scroll + registo de "visualizada" (sinal fraco de interesse)
     const io = new IntersectionObserver(entries => {
       entries.forEach(e => {
-        if (e.isIntersecting) { e.target.classList.add('visible'); io.disconnect(); }
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          marcarComoVista(n);
+          io.disconnect();
+        }
       });
     }, { threshold: 0.08 });
     io.observe(wrap);
 
     // Expand button
     wrap.querySelector('.card-expand-btn')?.addEventListener('click', () => toggleCard(n, wrap));
+    bindRecActions(wrap, n);
   });
 
   displayedCount += batch.length;
+}
+
+/* Liga os botões de reação (gostei / guardar / não interessa) presentes
+   num card ou no hero. `container` deve conter .rec-like-btn, .rec-save-btn
+   e .rec-hide-btn. `wrapEl` (opcional) é o elemento removido visualmente
+   quando o utilizador marca "não interessa". */
+function bindRecActions(container, n, wrapEl) {
+  const likeBtn = container.querySelector('.rec-like-btn');
+  const saveBtn = container.querySelector('.rec-save-btn');
+  const hideBtn = container.querySelector('.rec-hide-btn');
+
+  likeBtn?.addEventListener('click', () => {
+    const ativo = marcarComoGostei(n);
+    likeBtn.classList.toggle('active-like', ativo);
+    likeBtn.innerHTML = ativo ? '❤️ Gostei' : '🤍 Gostei';
+  });
+  saveBtn?.addEventListener('click', () => {
+    const ativo = marcarComoGuardada(n);
+    saveBtn.classList.toggle('active-save', ativo);
+    saveBtn.innerHTML = ativo ? '🔖 Guardado' : '🔖 Guardar';
+    showToast(ativo ? '🔖 Notícia guardada' : 'Removida dos guardados', 'blue');
+  });
+  hideBtn?.addEventListener('click', () => marcarComoNaoInteressante(n, wrapEl || container.closest('.card-wrap')));
+}
+
+function recEngagementRowHTML(n) {
+  const liked = recGostei.has(n.ts), saved = recGuardados.has(n.ts);
+  return `
+    <div class="rec-actions" role="group" aria-label="Reagir a esta notícia">
+      <button type="button" class="rec-action-btn rec-like-btn ${liked ? 'active-like' : ''}">${liked ? '❤️ Gostei' : '🤍 Gostei'}</button>
+      <button type="button" class="rec-action-btn rec-save-btn ${saved ? 'active-save' : ''}">${saved ? '🔖 Guardado' : '🔖 Guardar'}</button>
+      <button type="button" class="rec-action-btn rec-hide-btn">🚫 Não me interessa</button>
+    </div>`;
 }
 
 function cardHTML(n) {
@@ -1886,6 +2538,8 @@ function cardHTML(n) {
     ? `<img class="card-img" src="${esc(thumbUrl)}" alt="${esc(n.titulo)}" loading="lazy" data-video-id="${esc(vid || '')}">${playBadge}`
     : `<div class="card-no-img" aria-hidden="true">📰</div>`;
 
+  const motivo = recEnabled ? explicarRecomendacao(n, n._motivo) : null;
+
   return `
     <article class="card" aria-label="${esc(n.titulo)}">
       <div class="card-img-wrap">${imgBlock}</div>
@@ -1894,6 +2548,7 @@ function cardHTML(n) {
           ${catBadgeHTML(n.categoria)}
           ${tb ? `<span class="temp-badge" style="color:var(--text);background:var(--bg3);border-color:var(--border)">${tb}</span>` : ''}
         </div>
+        ${motivo ? `<span class="rec-reason">${esc(motivo)}</span>` : ''}
         <h2 class="card-title">${esc(n.titulo || '')}</h2>
         <p class="card-sub">${esc(n.subtitulo || '')}</p>
         <div class="card-meta">
@@ -1920,20 +2575,72 @@ function toggleCard(n, wrap) {
       <div class="card-article-inner">
         <div class="article-author-line">Por ${esc(n.autor || 'Redação SEEM')} · ${relTime(n.ts)}</div>
         <div class="article-body">${corpoHtml(n.corpo)}</div>
+        ${recEngagementRowHTML(n)}
         ${shareButtonsHTML(n.titulo)}
         <div id="comments-wrap-card-${n.ts}"></div>
       </div>`;
-    bindShareButtons(art);
+    bindShareButtons(art, n);
+    bindRecActions(art, n, wrap);
     renderComentarios(n.ts, `comments-wrap-card-${n.ts}`);
     art.classList.add('open'); art.setAttribute('aria-hidden', 'false');
     btn.textContent = 'Fechar ▴'; btn.setAttribute('aria-expanded', 'true'); btn.classList.add('open');
     openCards.add(n.ts);
+    registarEvento(n, 'open');
+    recIniciarLeituraAtiva(n, art.querySelector('.article-body'));
     setTimeout(() => art.scrollIntoView({ behavior: 'smooth', block: 'start' }), 80);
   } else {
+    recPararLeituraAtiva(n);
     art.classList.remove('open'); art.setAttribute('aria-hidden', 'true');
     btn.textContent = 'Leia mais ▾'; btn.setAttribute('aria-expanded', 'false'); btn.classList.remove('open');
     openCards.delete(n.ts);
   }
+}
+
+/* ═══ TEMPO ATIVO DE LEITURA ═══
+   Só conta o tempo em que o artigo está aberto E a aba está visível E o
+   corpo do texto está realmente no ecrã — uma aba aberta em segundo plano
+   não deve contar como "leu". A "leitura completa" dispara quando o fim
+   do corpo do artigo entra na viewport pelo menos uma vez. */
+const recLeituraAtiva = new Map(); // ts -> { inicio, acumulado, completou }
+
+function recIniciarLeituraAtiva(n, bodyEl) {
+  const estado = { inicio: document.visibilityState === 'visible' ? Date.now() : null, acumulado: 0, completou: false };
+  recLeituraAtiva.set(n.ts, estado);
+
+  const onVis = () => {
+    if (document.hidden) {
+      if (estado.inicio) { estado.acumulado += Date.now() - estado.inicio; estado.inicio = null; }
+    } else if (!estado.inicio) {
+      estado.inicio = Date.now();
+    }
+  };
+  document.addEventListener('visibilitychange', onVis);
+  estado._onVis = onVis;
+
+  if (bodyEl) {
+    const completeIO = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting && !estado.completou) {
+          estado.completou = true;
+          registarEvento(n, 'complete');
+          completeIO.disconnect();
+        }
+      });
+    }, { threshold: 0.9 });
+    completeIO.observe(bodyEl);
+    estado._io = completeIO;
+  }
+}
+
+function recPararLeituraAtiva(n) {
+  const estado = recLeituraAtiva.get(n.ts);
+  if (!estado) return;
+  if (estado.inicio) estado.acumulado += Date.now() - estado.inicio;
+  document.removeEventListener('visibilitychange', estado._onVis);
+  estado._io?.disconnect();
+  const segundos = estado.acumulado / 1000;
+  if (segundos >= 3) registarEvento(n, 'read_time', { segundos });
+  recLeituraAtiva.delete(n.ts);
 }
 
 /* ═══ SCROLL INFINITO ═══
@@ -2313,14 +3020,19 @@ function shareButtonsHTML(titulo) {
 
 /* Liga os cliques dos botões de compartilhamento dentro de um container.
    Chamada depois de injetar shareButtonsHTML() no DOM (hero ou card). */
-function bindShareButtons(container) {
+function bindShareButtons(container, n) {
   container.querySelector('.share-whatsapp')?.addEventListener('click', e => {
     shareToWhatsApp(e.currentTarget.dataset.titulo);
+    if (n) registarEvento(n, 'share');
   });
   container.querySelector('.share-x')?.addEventListener('click', e => {
     shareToX(e.currentTarget.dataset.titulo);
+    if (n) registarEvento(n, 'share');
   });
-  container.querySelector('.share-copy')?.addEventListener('click', copyLink);
+  container.querySelector('.share-copy')?.addEventListener('click', () => {
+    copyLink();
+    if (n) registarEvento(n, 'share');
+  });
 }
 
 /* ═══ FIREBASE AUTH (Google) ═══ */
@@ -2346,9 +3058,27 @@ const provider     = new GoogleAuthProvider();
 let currentUser = null;   // utilizador autenticado (ou null)
 
 // Observa mudanças de sessão
-onAuthStateChanged(auth, user => {
+onAuthStateChanged(auth, async user => {
   currentUser = user;
   updateAuthUI(user);
+
+  /* Ao entrar, busca o perfil de interesses sincronizado (se existir) e
+     junta-o ao perfil local, para que as preferências acompanhem o
+     utilizador entre dispositivos. Nunca sobrescreve com dados vazios. */
+  if (user?.uid) {
+    try {
+      const r = await fetch(`${FB}/perfis/${user.uid}.json`);
+      const remoto = await r.json();
+      if (remoto) {
+        ['categorias', 'paises', 'setores'].forEach(campo => {
+          Object.entries(remoto[campo] || {}).forEach(([k, v]) => {
+            recPerfil[campo][k] = Math.max(recPerfil[campo][k] || 0, v);
+          });
+        });
+        applyFilter();
+      }
+    } catch (e) {}
+  }
 });
 
 function updateAuthUI(user) {
@@ -2443,6 +3173,38 @@ function openImgModal(src, alt) {
   imgModal.classList.add('active');
   document.body.style.overflow = 'hidden';
 }
+
+/* Download real de imagem hospedada em outro domínio (Unsplash, etc.):
+   o atributo download="" do HTML só funciona pra arquivos do mesmo domínio.
+   Pra imagem externa, o navegador ignora esse atributo e só abre em nova aba.
+   Aqui buscamos os bytes da imagem via fetch e forçamos o download como blob local. */
+imgModalDownload.addEventListener('click', async (e) => {
+  e.preventDefault();
+  const url = imgModalDownload.href;
+  const filename = imgModalDownload.dataset.filename || 'imagem-seem.jpg';
+  const originalText = imgModalDownload.textContent;
+  try {
+    imgModalDownload.textContent = 'Baixando…';
+    const res = await fetch(url, { mode: 'cors' });
+    if (!res.ok) throw new Error('fetch falhou');
+    const blob = await res.blob();
+    const blobUrl = URL.createObjectURL(blob);
+    const tempLink = document.createElement('a');
+    tempLink.href = blobUrl;
+    tempLink.download = filename;
+    document.body.appendChild(tempLink);
+    tempLink.click();
+    document.body.removeChild(tempLink);
+    setTimeout(() => URL.revokeObjectURL(blobUrl), 4000);
+  } catch (err) {
+    /* Se o servidor da imagem bloquear CORS, não tem como forçar o download
+       via JS — nesse caso, abrimos a imagem numa aba nova como alternativa,
+       pra que o usuário baixe manualmente (clique direito > salvar). */
+    window.open(url, '_blank', 'noopener,noreferrer');
+  } finally {
+    imgModalDownload.textContent = originalText;
+  }
+});
 
 function closeImgModal() {
   imgModal.classList.remove('active');
