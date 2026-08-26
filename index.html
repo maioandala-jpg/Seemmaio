@@ -1175,13 +1175,55 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
    RESPONSIVE HEADER
 ═══════════════════════════════════════════ */
 @media (max-width: 760px) {
-  .header-top { flex-wrap: wrap; gap: 10px; }
+  .header-top { flex-wrap: wrap; gap: 10px; padding: 10px 14px; }
+  .logo-block { order: 1; }
+  .live-block { order: 2; margin-left: auto; }
   .search-wrap { order: 3; max-width: 100%; flex: 1 1 100%; }
-  .header-selects { display: none; }
+
+  /* Em vez de escondermos os filtros de país/setor (como antes — o que os
+     tornava inacessíveis no telemóvel), mostramo-los numa linha própria,
+     abaixo da pesquisa, ocupando a largura toda e divididos a meio. */
+  .header-selects { display: flex; order: 4; flex: 1 1 100%; max-width: 100%; }
+  .header-select  { flex: 1 1 50%; max-width: none; }
+
+  .header-actions {
+    order: 5; flex: 1 1 100%; margin-left: 0;
+    flex-wrap: wrap; justify-content: flex-start; gap: 8px;
+  }
   .live-block #clock { display: none; }
   .hero-body { padding: 22px; }
   .hero-expanded-inner { padding: 22px 18px; }
   #navbar .nav-btn { padding: 10px 10px; font-size: 9.5px; }
+
+  /* Alvos de toque maiores — mais fáceis de acertar com o dedo. */
+  .card-expand-btn, .hero-expand-btn, .rec-action-btn, .share-btn,
+  #theme-toggle, #rec-settings-btn { min-height: 40px; }
+  .rec-action-btn { padding: 8px 12px; }
+
+  /* Linhas de ações não devem "explodir" a largura do cartão — quebram
+     para a linha seguinte em vez de forçar scroll horizontal. */
+  .rec-actions, .share-row { flex-wrap: wrap; row-gap: 8px; }
+
+  /* Painel de recomendações: em vez de um dropdown fixo de 270px que
+     pode sair do ecrã em telemóveis estreitos, vira um cartão fixo,
+     centrado, com largura relativa ao ecrã. */
+  .rec-panel {
+    position: fixed; top: auto; bottom: 16px; left: 16px; right: 16px;
+    width: auto; max-width: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .logo { font-size: 24px; }
+  #maio-hub-btn span:last-child, #loja-btn span:last-child { display: none; }
+  #maio-hub-btn, #loja-btn { padding: 8px 10px; }
+  #auth-label { max-width: 64px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .hero-title { font-size: clamp(20px, 7vw, 30px); }
+  .hero-sub { font-size: 13.5px; }
+  .hero-body, .hero-skeleton { padding: 18px; }
+  #page { padding: 16px 12px; }
+  .card-body { padding: 14px; }
+  .rec-reason { font-size: 10px; padding: 3px 9px; }
 }
 </style>
 </head>
