@@ -255,6 +255,163 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 #video-modal-close:hover { background: rgba(255,255,255,0.22); }
 
 /* ═══════════════════════════════════════════
+   ÁUDIO — mini botão "na ponta" (hero + cards)
+   Fica separado do play de vídeo: não cobre a imagem,
+   fica ancorado a um canto, sempre visível e sempre
+   clicável mesmo se a notícia também tiver vídeo.
+═══════════════════════════════════════════ */
+.audio-mini-btn {
+  position: absolute; z-index: 5;
+  display: flex; align-items: center; gap: 6px;
+  top: 10px; right: 10px;
+  padding: 7px 12px 7px 9px;
+  border-radius: 20px;
+  background: rgba(10,10,10,0.68);
+  border: 1.5px solid rgba(255,215,0,0.55);
+  backdrop-filter: blur(3px);
+  color: #fff;
+  font-size: 11.5px; font-weight: 800;
+  letter-spacing: 0.02em;
+  transition: transform 0.18s ease, background 0.18s ease, border-color 0.18s ease;
+  animation: audioPulseRing 2.6s ease-in-out infinite;
+}
+.audio-mini-btn:hover {
+  transform: translateY(-1px) scale(1.04);
+  background: var(--gold);
+  color: #0a0a0a;
+  border-color: var(--gold);
+}
+.audio-mini-btn .audio-mini-icon {
+  width: 20px; height: 20px; border-radius: 50%;
+  background: var(--gold); color: #0a0a0a;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; flex-shrink: 0;
+}
+.audio-mini-btn:hover .audio-mini-icon { background: #0a0a0a; color: var(--gold); }
+.card-img-wrap .audio-mini-btn { top: 8px; right: 8px; padding: 5px 10px 5px 6px; font-size: 10.5px; }
+.card-img-wrap .audio-mini-btn .audio-mini-icon { width: 17px; height: 17px; font-size: 9px; }
+
+@keyframes audioPulseRing {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(255,215,0,0.35); }
+  50%      { box-shadow: 0 0 0 6px rgba(255,215,0,0); }
+}
+
+/* Cartão de aviso — aparece sempre dentro do artigo aberto quando a
+   notícia tem áudio, convidando a ouvir e evitando que passe despercebido */
+.audio-invite-card {
+  display: flex; align-items: center; gap: 12px;
+  background: linear-gradient(135deg, rgba(255,215,0,0.09), rgba(255,215,0,0.02));
+  border: 1px solid rgba(255,215,0,0.28);
+  border-radius: 10px;
+  padding: 13px 15px;
+  margin: 4px 0 6px;
+}
+.audio-invite-icon {
+  flex-shrink: 0; width: 38px; height: 38px; border-radius: 50%;
+  background: var(--gold); color: #0a0a0a;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 17px;
+  animation: audioPulseRing 2.6s ease-in-out infinite;
+}
+.audio-invite-text { flex: 1; font-size: 12.5px; line-height: 1.5; color: var(--text); }
+.audio-invite-text strong { color: var(--gold); display: block; font-size: 13px; margin-bottom: 1px; }
+.audio-invite-btn {
+  flex-shrink: 0;
+  background: var(--gold); color: #0a0a0a;
+  border-radius: 20px; padding: 9px 16px;
+  font-size: 12px; font-weight: 800;
+  white-space: nowrap;
+  transition: transform 0.15s ease;
+}
+.audio-invite-btn:hover { transform: translateY(-1px); }
+@media (max-width: 480px) {
+  .audio-invite-card { flex-wrap: wrap; }
+  .audio-invite-btn { width: 100%; text-align: center; }
+}
+
+/* ═══════════════════════════════════════════
+   MODAL DE ÁUDIO ("Rádio SEEM")
+   Visualmente diferente do modal de vídeo: em vez de
+   entregar direto um player de vídeo, mostra primeiro uma
+   tela calma de "preparando o áudio" com frases que revezam,
+   pra reduzir a ansiedade da espera — só depois revela o player.
+═══════════════════════════════════════════ */
+#audio-modal {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.94);
+  z-index: 9150;
+  display: none;
+  align-items: center; justify-content: center;
+  padding: 20px;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+#audio-modal.active { display: flex; opacity: 1; }
+.audio-modal-inner {
+  position: relative;
+  width: 100%; max-width: 460px;
+  display: flex; flex-direction: column; gap: 14px;
+  background: var(--card-bg);
+  border: 1px solid rgba(255,215,0,0.3);
+  border-radius: 16px;
+  padding: 28px 22px 22px;
+  box-shadow: 0 10px 50px rgba(0,0,0,0.6);
+}
+#audio-modal-close {
+  position: absolute; top: -46px; right: 0;
+  width: 38px; height: 38px; border-radius: 50%;
+  background: rgba(255,255,255,0.12); color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px;
+  transition: background 0.15s;
+}
+#audio-modal-close:hover { background: rgba(255,255,255,0.22); }
+
+.audio-modal-badge {
+  align-self: center;
+  font-size: 10.5px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--gold); border: 1px solid rgba(255,215,0,0.4);
+  border-radius: 20px; padding: 4px 12px;
+}
+.audio-modal-icon-wrap {
+  align-self: center; position: relative;
+  width: 84px; height: 84px; margin: 6px 0 2px;
+  display: flex; align-items: center; justify-content: center;
+}
+.audio-modal-icon-ring {
+  position: absolute; inset: 0; border-radius: 50%;
+  border: 2px solid rgba(255,215,0,0.35);
+  animation: audioRingExpand 1.8s ease-out infinite;
+}
+.audio-modal-icon-ring.ring2 { animation-delay: 0.6s; }
+@keyframes audioRingExpand {
+  0%   { transform: scale(0.75); opacity: 0.9; }
+  100% { transform: scale(1.35); opacity: 0; }
+}
+.audio-modal-icon {
+  width: 60px; height: 60px; border-radius: 50%;
+  background: var(--gold); color: #0a0a0a;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 26px; z-index: 1;
+}
+#audio-modal-titulo {
+  text-align: center; color: #fff; font-size: 14.5px; font-weight: 700;
+  line-height: 1.4; padding: 0 4px;
+}
+#audio-modal-msg {
+  text-align: center; color: var(--muted); font-size: 12.5px; line-height: 1.5;
+  min-height: 18px; transition: opacity 0.3s ease;
+}
+.audio-modal-frame-wrap {
+  width: 100%; border-radius: 10px; overflow: hidden;
+  background: #000; opacity: 0; height: 0; transition: opacity 0.35s ease;
+}
+.audio-modal-frame-wrap.ready { opacity: 1; height: 64px; }
+.audio-modal-frame-wrap iframe { width: 100%; height: 64px; border: 0; display: block; }
+[data-theme="light"] #audio-modal-close { background: rgba(0,0,0,0.12); color: #13120e; }
+[data-theme="light"] #audio-modal-close:hover { background: rgba(0,0,0,0.2); }
+
+/* ═══════════════════════════════════════════
    TICKER BAND
 ═══════════════════════════════════════════ */
 #ticker {
@@ -1461,6 +1618,9 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
       <div class="video-play-badge" id="hero-video-badge" style="display:none;" aria-hidden="true">
         <svg viewBox="0 0 24 24"><polygon points="6 4 20 12 6 20 6 4"/></svg>
       </div>
+      <button type="button" class="audio-mini-btn" id="hero-audio-btn" style="display:none;" aria-label="Ouvir esta notícia narrada">
+        <span class="audio-mini-icon" aria-hidden="true">🎧</span> Ouvir
+      </button>
       <div class="hero-body" id="hero-body" aria-label="Notícia principal"></div>
     </div>
     <div class="hero-expanded" id="hero-expanded" aria-hidden="true">
@@ -1574,6 +1734,24 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
       <iframe id="video-modal-frame" src="" title="Vídeo" allow="autoplay; encrypted-media; fullscreen" allowfullscreen></iframe>
     </div>
     <div id="video-modal-titulo"></div>
+  </div>
+</div>
+
+<!-- MODAL DE ÁUDIO — "Rádio SEEM": tela de espera calma antes do player -->
+<div id="audio-modal" role="dialog" aria-modal="true" aria-label="Ouvir notícia">
+  <div class="audio-modal-inner">
+    <button type="button" id="audio-modal-close" aria-label="Fechar áudio">✕</button>
+    <span class="audio-modal-badge">🎧 Rádio SEEM</span>
+    <div class="audio-modal-icon-wrap">
+      <div class="audio-modal-icon-ring"></div>
+      <div class="audio-modal-icon-ring ring2"></div>
+      <div class="audio-modal-icon">🎧</div>
+    </div>
+    <div id="audio-modal-titulo"></div>
+    <div id="audio-modal-msg">Preparando o áudio…</div>
+    <div class="audio-modal-frame-wrap" id="audio-modal-frame-wrap">
+      <iframe id="audio-modal-frame" src="" title="Áudio da notícia" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+    </div>
   </div>
 </div>
 
@@ -2607,10 +2785,16 @@ function renderHero() {
 
   const heroImg = document.getElementById('hero-img');
   const heroVid = extrairYoutubeId(n.video);
-  heroImg.src = n.imagem || (heroVid ? `https://img.youtube.com/vi/${heroVid}/maxresdefault.jpg` : '');
+  const heroAud = extrairYoutubeId(n.audio);
+  heroImg.src = n.imagem || (heroVid ? `https://img.youtube.com/vi/${heroVid}/maxresdefault.jpg` : (heroAud ? `https://img.youtube.com/vi/${heroAud}/maxresdefault.jpg` : ''));
   heroImg.alt = n.titulo || '';
   heroImg.dataset.videoId = heroVid || '';
   document.getElementById('hero-video-badge').style.display = heroVid ? 'flex' : 'none';
+
+  const heroAudioBtn = document.getElementById('hero-audio-btn');
+  heroAudioBtn.style.display = heroAud ? 'flex' : 'none';
+  heroAudioBtn.dataset.audioId = heroAud || '';
+  heroAudioBtn.dataset.audioTitulo = n.titulo || '';
 
   const body = document.getElementById('hero-body');
   const tb   = tempBadge(n.temperatura);
@@ -2674,6 +2858,7 @@ function populateHeroArticle(n) {
   const inner = document.getElementById('hero-expanded-inner');
   inner.innerHTML = `
     <div class="article-author-line">Por ${esc(n.autor || 'Redação SEEM')} · ${relTime(n.ts)}</div>
+    ${audioInviteHTML(n)}
     <div class="article-body">${corpoHtml(n.corpo)}</div>
     ${ctaHTML(n)}
     ${recEngagementRowHTML(n)}
@@ -2814,6 +2999,23 @@ function ctaHTML(n) {
   return html;
 }
 
+/* Cartão-convite pra ouvir a notícia narrada. Aparece sempre que a notícia
+   tiver n.audio, logo no topo do artigo aberto — não depende do utilizador
+   perceber o mini botão sozinho, o próprio artigo já convida a ouvir. */
+function audioInviteHTML(n) {
+  const aud = extrairYoutubeId(n.audio);
+  if (!aud) return '';
+  return `
+    <div class="audio-invite-card">
+      <div class="audio-invite-icon" aria-hidden="true">🎧</div>
+      <div class="audio-invite-text">
+        <strong>Prefere ouvir?</strong>
+        Esta notícia também está narrada. Toque em play e ouça com calma.
+      </div>
+      <button type="button" class="audio-invite-btn" data-audio-id="${esc(aud)}" data-audio-titulo="${esc(n.titulo || '')}">▶ Ouvir</button>
+    </div>`;
+}
+
 /* Linha de confiança: assume publicamente que pode haver erro — humano ou
    automático — e dá um caminho fácil para reportar. Transparência sobre
    limites tende a aumentar a confiança mais do que fingir perfeição. */
@@ -2838,13 +3040,17 @@ function recEngagementRowHTML(n) {
 function cardHTML(n) {
   const tb = tempBadge(n.temperatura);
   const vid = extrairYoutubeId(n.video);
-  const thumbUrl = n.imagem || (vid ? `https://img.youtube.com/vi/${vid}/hqdefault.jpg` : '');
+  const aud = extrairYoutubeId(n.audio);
+  const thumbUrl = n.imagem || (vid ? `https://img.youtube.com/vi/${vid}/hqdefault.jpg` : (aud ? `https://img.youtube.com/vi/${aud}/hqdefault.jpg` : ''));
   const playBadge = vid
     ? `<div class="video-play-badge" aria-hidden="true"><svg viewBox="0 0 24 24"><polygon points="6 4 20 12 6 20 6 4"/></svg></div>`
     : '';
+  const audioBadge = aud
+    ? `<button type="button" class="audio-mini-btn" data-audio-id="${esc(aud)}" data-audio-titulo="${esc(n.titulo || '')}" aria-label="Ouvir esta notícia narrada"><span class="audio-mini-icon" aria-hidden="true">🎧</span> Ouvir</button>`
+    : '';
   const imgBlock = thumbUrl
-    ? `<img class="card-img" src="${esc(thumbUrl)}" alt="${esc(n.titulo)}" loading="lazy" data-video-id="${esc(vid || '')}">${playBadge}`
-    : `<div class="card-no-img" aria-hidden="true">📰</div>`;
+    ? `<img class="card-img" src="${esc(thumbUrl)}" alt="${esc(n.titulo)}" loading="lazy" data-video-id="${esc(vid || '')}">${playBadge}${audioBadge}`
+    : `<div class="card-no-img" aria-hidden="true">📰</div>${audioBadge}`;
 
   const motivo = recEnabled ? explicarRecomendacao(n, n._motivo) : null;
 
@@ -2882,6 +3088,7 @@ function toggleCard(n, wrap) {
     art.innerHTML = `
       <div class="card-article-inner">
         <div class="article-author-line">Por ${esc(n.autor || 'Redação SEEM')} · ${relTime(n.ts)}</div>
+        ${audioInviteHTML(n)}
         <div class="article-body">${corpoHtml(n.corpo)}</div>
         ${ctaHTML(n)}
         ${recEngagementRowHTML(n)}
@@ -3464,6 +3671,92 @@ function closeVideoModal() {
 document.getElementById('video-modal-close').addEventListener('click', closeVideoModal);
 videoModal.addEventListener('click', e => { if (e.target === videoModal) closeVideoModal(); });
 document.addEventListener('keydown', e => { if (e.key === 'Escape' && videoModal.classList.contains('active')) closeVideoModal(); });
+
+/* ═══ MODAL DE ÁUDIO ("Rádio SEEM") ═══
+   Em vez de jogar o iframe direto na cara do utilizador, mostra primeiro
+   uma tela calma por ~1.6s com frases que revezam, reduzindo a ansiedade
+   de "carregou? travou?" antes do player realmente aparecer. */
+const audioModal          = document.getElementById('audio-modal');
+const audioModalFrame     = document.getElementById('audio-modal-frame');
+const audioModalFrameWrap = document.getElementById('audio-modal-frame-wrap');
+const audioModalTit       = document.getElementById('audio-modal-titulo');
+const audioModalMsg       = document.getElementById('audio-modal-msg');
+
+const AUDIO_MENSAGENS_ESPERA = [
+  'Preparando o áudio…',
+  'Só mais um instante, vale a pena 🎧',
+  'A notícia já vai começar a tocar…',
+  'Relaxa, tá quase — respira fundo enquanto isso 🙂',
+  'Ligando o microfone da redação…'
+];
+
+let audioMsgInterval = null;
+let audioMsgIndex = 0;
+
+function iniciarMensagensEspera() {
+  audioMsgIndex = 0;
+  audioModalMsg.style.opacity = '1';
+  audioModalMsg.textContent = AUDIO_MENSAGENS_ESPERA[0];
+  clearInterval(audioMsgInterval);
+  audioMsgInterval = setInterval(() => {
+    audioMsgIndex = (audioMsgIndex + 1) % AUDIO_MENSAGENS_ESPERA.length;
+    audioModalMsg.style.opacity = '0';
+    setTimeout(() => {
+      audioModalMsg.textContent = AUDIO_MENSAGENS_ESPERA[audioMsgIndex];
+      audioModalMsg.style.opacity = '1';
+    }, 250);
+  }, 1900);
+}
+
+function pararMensagensEspera() {
+  clearInterval(audioMsgInterval);
+  audioMsgInterval = null;
+}
+
+function openAudioModal(vid, titulo) {
+  if (!vid) return;
+  audioModalTit.textContent = titulo || '';
+  audioModalFrameWrap.classList.remove('ready');
+  audioModalFrame.src = '';
+  audioModal.classList.add('active');
+  document.body.style.overflow = 'hidden';
+  iniciarMensagensEspera();
+
+  // Pequena espera intencional antes de revelar o player: dá tempo do
+  // iframe carregar de verdade e evita a sensação de "clicou e nada
+  // aconteceu" — a mensagem reconfortante preenche esse intervalo.
+  audioModalFrame.src =
+    'https://www.youtube.com/embed/' + vid + '?autoplay=1&rel=0&modestbranding=1&playsinline=1&origin=' + encodeURIComponent(location.origin);
+  setTimeout(() => {
+    if (!audioModal.classList.contains('active')) return;
+    pararMensagensEspera();
+    audioModalMsg.textContent = '▶ A tocar agora';
+    audioModalFrameWrap.classList.add('ready');
+  }, 1600);
+}
+
+function closeAudioModal() {
+  audioModal.classList.remove('active');
+  document.body.style.overflow = '';
+  pararMensagensEspera();
+  audioModalFrame.src = ''; // pára a reprodução ao fechar
+  audioModalFrameWrap.classList.remove('ready');
+}
+
+document.getElementById('audio-modal-close').addEventListener('click', closeAudioModal);
+audioModal.addEventListener('click', e => { if (e.target === audioModal) closeAudioModal(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && audioModal.classList.contains('active')) closeAudioModal(); });
+
+// Delegação: cobre os mini botões nos cards do feed (recriados o tempo
+// todo pelo renderFeed) e o cartão-convite dentro dos artigos abertos.
+document.addEventListener('click', e => {
+  const btn = e.target.closest('.audio-mini-btn, .audio-invite-btn');
+  if (!btn) return;
+  e.stopPropagation();
+  const vid = btn.dataset.audioId;
+  const titulo = btn.dataset.audioTitulo;
+  if (vid) openAudioModal(vid, titulo);
+});
 
 /* ═══ IMAGE VIEWER (clique para ampliar + baixar) ═══
    Delegação de evento no documento: funciona para o hero e para
