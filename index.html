@@ -325,6 +325,17 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
   border-bottom-color: rgba(184,134,11,0.18);
 }
 
+/* ═══════════════════════════════════════════
+   HEADER — esconde ao rolar para baixo, volta ao rolar para cima
+═══════════════════════════════════════════ */
+#header {
+  position: sticky; top: 0; z-index: 50;
+  background: var(--bg1);
+  transition: transform 0.28s ease;
+  will-change: transform;
+}
+#header.header-hidden { transform: translateY(-101%); }
+
 .header-top {
   display: flex;
   align-items: center;
@@ -377,22 +388,43 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 #live-label { font-size: 10px; font-weight: 700; color: var(--red); letter-spacing: 0.1em; }
 #clock { font-size: 12px; font-weight: 700; color: var(--muted); font-variant-numeric: tabular-nums; letter-spacing: 0.04em; }
 
-/* Search */
-.search-wrap { flex: 1; max-width: 300px; position: relative; }
+/* Search — colapsa numa lupa; expande ao clicar */
+.search-wrap {
+  flex: 0 0 40px; max-width: 40px; position: relative;
+  transition: flex-basis 0.25s ease, max-width 0.25s ease;
+}
+.search-wrap.open { flex: 1 1 240px; max-width: 300px; }
+#search-toggle-btn {
+  width: 40px; height: 40px; border-radius: 50%; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--bg3); border: 1px solid var(--border);
+  font-size: 15px; color: var(--muted);
+  transition: border-color 0.2s, color 0.2s;
+}
+.search-wrap.open #search-toggle-btn { border-color: var(--gold); color: var(--gold); }
+#search-toggle-btn:hover { border-color: var(--gold); color: var(--gold); }
 #search-input {
-  width: 100%;
+  position: absolute; inset: 0; left: 0; right: 0;
+  width: 100%; height: 40px; box-sizing: border-box;
   background: var(--bg3);
   border: 1px solid var(--border);
   border-radius: 20px;
-  padding: 7px 32px 7px 34px;
+  padding: 7px 32px 7px 36px;
   color: var(--text);
   font-size: 13px;
   font-family: var(--font);
-  transition: border-color 0.2s, box-shadow 0.2s;
+  opacity: 0; pointer-events: none;
+  transition: border-color 0.2s, box-shadow 0.2s, opacity 0.2s;
 }
+.search-wrap.open #search-input { opacity: 1; pointer-events: auto; }
 #search-input::placeholder { color: var(--muted); }
 #search-input:focus { border-color: var(--gold); box-shadow: 0 0 0 2px var(--gold-dim); outline: none; }
-.search-icon { position: absolute; left: 11px; top: 50%; transform: translateY(-50%); color: var(--muted); font-size: 13px; pointer-events: none; }
+.search-icon {
+  position: absolute; left: 12px; top: 50%; transform: translateY(-50%);
+  color: var(--muted); font-size: 13px; pointer-events: none;
+  opacity: 0; transition: opacity 0.2s;
+}
+.search-wrap.open .search-icon { opacity: 1; }
 #search-spinner {
   position: absolute; right: 11px; top: 50%; transform: translateY(-50%);
   width: 15px; height: 15px; display: none;
@@ -419,39 +451,62 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 }
 .header-select:focus { border-color: var(--gold); outline: none; }
 
-/* Theme toggle */
+/* Ações do cabeçalho */
 .header-actions { display: flex; align-items: center; gap: 8px; margin-left: auto; flex-shrink: 0; }
 
-/* ── AUTH ── */
-#auth-btn {
-  display: flex; align-items: center; gap: 6px;
-  background: var(--bg3); border: 1px solid var(--border);
-  border-radius: 20px; padding: 5px 12px 5px 7px;
-  font-size: 11.5px; font-weight: 700; color: var(--muted);
-  letter-spacing: 0.04em; cursor: pointer;
-  transition: border-color 0.15s, color 0.15s;
-  white-space: nowrap;
+/* ── AUTH ── (dentro do menu "⋮" — reset do estilo de pill p/ linha de menu) */
+.more-menu-panel #auth-btn {
+  display: flex; align-items: center; gap: 10px; width: 100%;
+  background: transparent; border: none; border-radius: 8px;
+  padding: 10px 10px; font-size: 13px; font-weight: 700; color: var(--text);
+  letter-spacing: normal; text-align: left;
 }
-#auth-btn:hover { border-color: var(--gold-dark); color: var(--gold); }
+.more-menu-panel #auth-btn:hover { background: var(--bg3); border-color: transparent; color: var(--text); }
 #auth-btn img { width: 22px; height: 22px; border-radius: 50%; object-fit: cover; }
 #auth-btn .auth-icon { font-size: 16px; line-height: 1; }
 #auth-spinner { display: none; width: 16px; height: 16px;
   border: 2px solid var(--border); border-top-color: var(--gold);
   border-radius: 50%; animation: spin 0.7s linear infinite; }
 @keyframes spin { to { transform: rotate(360deg); } }
-#theme-toggle {
-  background: var(--bg3);
-  border: 1px solid var(--border);
-  border-radius: 50%;
-  width: 34px; height: 34px;
-  font-size: 15px;
+
+/* ── MENU "⋮" (tema, conta, personalização) ── */
+.more-menu-wrap { position: relative; }
+#more-menu-btn {
+  width: 38px; height: 38px; border-radius: 50%;
+  background: var(--bg3); border: 1px solid var(--border);
+  font-size: 18px; font-weight: 900; color: var(--muted); line-height: 1;
   display: inline-flex; align-items: center; justify-content: center;
-  transition: border-color 0.2s, transform 0.15s;
+  letter-spacing: -1px;
+  transition: border-color 0.2s, transform 0.15s, color 0.15s;
 }
-#theme-toggle:hover { border-color: var(--gold); transform: scale(1.1); }
+#more-menu-btn:hover { border-color: var(--gold); color: var(--gold); transform: scale(1.08); }
+#more-menu-btn.rec-off::after {
+  content: ''; position: absolute; top: 2px; right: 2px;
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--muted); border: 1.5px solid var(--bg2);
+}
+.more-menu-panel {
+  position: fixed; top: 70px; right: 24px;
+  width: 280px; background: var(--card-bg); border: 1px solid var(--border);
+  border-radius: 12px; box-shadow: var(--shadow); padding: 8px;
+  z-index: 60; display: none;
+}
+.more-menu-panel.open { display: block; }
+.more-menu-row {
+  display: flex; align-items: center; gap: 10px; width: 100%;
+  padding: 10px 10px; border-radius: 8px;
+  font-size: 13px; font-weight: 700; color: var(--text);
+  text-align: left; transition: background 0.15s;
+}
+.more-menu-row:hover { background: var(--bg3); }
+.more-menu-row-icon { font-size: 16px; width: 20px; text-align: center; flex-shrink: 0; }
+.more-menu-divider { height: 1px; background: var(--border); margin: 8px 4px; }
+.more-menu-section-title { font-size: 12px; font-weight: 800; color: var(--text); padding: 6px 10px 2px; }
+.more-menu-panel p { font-size: 11.5px; color: var(--muted); line-height: 1.5; padding: 0 10px 10px; }
 
 /* ── MAIO HUB BUTTON ── */
 #maio-hub-btn {
+  position: relative;
   display: flex; align-items: center; gap: 6px;
   background: var(--gold); color: #0a0a0a;
   border-radius: 20px; padding: 6px 14px;
@@ -460,8 +515,30 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
   white-space: nowrap; cursor: pointer;
   transition: transform 0.15s, box-shadow 0.15s;
   box-shadow: 0 2px 10px rgba(255,215,0,0.25);
+  animation: ctaPulseGlow 2.4s ease-in-out infinite;
 }
 #maio-hub-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 14px rgba(255,215,0,0.4); }
+@keyframes ctaPulseGlow {
+  0%, 100% { box-shadow: 0 2px 10px rgba(255,215,0,0.25); }
+  50%      { box-shadow: 0 2px 20px rgba(255,215,0,0.7); }
+}
+/* Selo "IA" — chama atenção para o CTA mais importante do cabeçalho */
+.cta-badge {
+  position: absolute; top: -8px; right: -6px;
+  background: var(--red); color: #fff;
+  font-size: 8.5px; font-weight: 900; letter-spacing: 0.05em;
+  padding: 2px 6px; border-radius: 10px; line-height: 1.3;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.35);
+  animation: ctaBadgeBounce 1.8s ease-in-out infinite;
+}
+@keyframes ctaBadgeBounce {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50%      { transform: translateY(-2px) scale(1.1); }
+}
+@media (prefers-reduced-motion: reduce) {
+  #maio-hub-btn { animation: none; }
+  .cta-badge { animation: none; }
+}
 
 /* ── LOJA (AETHER) BUTTON ── */
 #loja-btn {
@@ -768,28 +845,49 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
   pointer-events: none;
 }
 
-/* Botão + painel de personalização no header */
-.rec-settings-wrap { position: relative; }
-#rec-settings-btn {
-  width: 38px; height: 38px; border-radius: 50%;
-  display: flex; align-items: center; justify-content: center;
-  background: var(--bg3); border: 1px solid var(--border);
-  font-size: 16px; transition: border-color 0.2s, transform 0.15s;
+/* ── CTA contextual dentro do artigo (MAIO para vagas, Aether para comércio) ── */
+.inline-cta {
+  display: flex; align-items: center; gap: 12px;
+  margin: 16px 0; padding: 13px 16px;
+  border-radius: 12px; text-decoration: none;
+  transition: transform 0.15s, box-shadow 0.15s;
 }
-#rec-settings-btn:hover { border-color: var(--gold); transform: scale(1.1); }
-#rec-settings-btn.rec-off { opacity: 0.5; }
-.rec-panel {
-  position: absolute; top: calc(100% + 10px); right: 0;
-  width: 270px; background: var(--card-bg); border: 1px solid var(--border);
-  border-radius: 10px; box-shadow: var(--shadow); padding: 16px;
-  z-index: 60; display: none;
+.inline-cta:hover { transform: translateY(-1px); }
+.inline-cta-icon { font-size: 22px; flex-shrink: 0; }
+.inline-cta-text { flex: 1; font-size: 12.5px; line-height: 1.4; color: inherit; }
+.inline-cta-text strong { display: block; font-size: 13.5px; margin-bottom: 2px; }
+.inline-cta-arrow { font-size: 16px; font-weight: 900; flex-shrink: 0; opacity: 0.7; }
+.cta-maio {
+  background: linear-gradient(135deg, rgba(255,215,0,0.14), rgba(255,215,0,0.05));
+  border: 1px solid rgba(255,215,0,0.35); color: var(--text);
+  box-shadow: 0 2px 12px rgba(255,215,0,0.12);
 }
-.rec-panel.open { display: block; }
-.rec-panel h4 { font-size: 12.5px; margin-bottom: 6px; color: var(--text); }
-.rec-panel p { font-size: 11.5px; color: var(--muted); line-height: 1.5; margin-bottom: 12px; }
+.cta-maio:hover { box-shadow: 0 4px 18px rgba(255,215,0,0.22); }
+.cta-loja {
+  background: var(--bg3); border: 1px solid var(--border); color: var(--text);
+}
+
+/* ── Linha de confiança: assume que pode haver erro (humano OU automático) ── */
+.trust-line {
+  display: flex; align-items: center; flex-wrap: wrap; gap: 8px 10px;
+  margin: 14px 0 4px; padding: 10px 12px;
+  border-radius: 10px; background: var(--bg3);
+  font-size: 11px; color: var(--muted); line-height: 1.4;
+}
+.trust-report-btn {
+  font-size: 11px; font-weight: 700; color: var(--gold-dark);
+  text-decoration: underline; text-underline-offset: 2px; flex-shrink: 0;
+}
+.trust-report-btn:hover { color: var(--gold); }
+.footer-trust {
+  font-size: 11px; color: var(--muted); line-height: 1.5; margin-top: 10px;
+}
+.footer-trust button { font-weight: 700; color: var(--gold-dark); text-decoration: underline; }
+
+/* Personalização — reaproveitado dentro do menu "⋮" (.more-menu-panel) */
 .rec-toggle-row {
   display: flex; align-items: center; justify-content: space-between;
-  margin-bottom: 12px;
+  padding: 4px 10px 10px;
 }
 .rec-switch {
   position: relative; width: 40px; height: 22px; flex-shrink: 0;
@@ -803,10 +901,10 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 }
 .rec-switch.on .rec-switch-dot { left: 20px; background: var(--gold); }
 .rec-panel-btn {
-  width: 100%; padding: 8px; border-radius: var(--radius);
+  width: calc(100% - 20px); margin: 0 10px 6px; padding: 8px; border-radius: var(--radius);
   background: var(--bg3); border: 1px solid var(--border);
   font-size: 11.5px; font-weight: 700; color: var(--muted);
-  margin-top: 6px; transition: color 0.15s, border-color 0.15s;
+  transition: color 0.15s, border-color 0.15s;
 }
 .rec-panel-btn:hover { color: var(--red); border-color: var(--red); }
 
@@ -1178,7 +1276,8 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
   .header-top { flex-wrap: wrap; gap: 10px; padding: 10px 14px; }
   .logo-block { order: 1; }
   .live-block { order: 2; margin-left: auto; }
-  .search-wrap { order: 3; max-width: 100%; flex: 1 1 100%; }
+  .search-wrap { order: 3; flex: 0 0 40px; max-width: 40px; }
+  .search-wrap.open { flex: 1 1 100%; max-width: 100%; }
 
   /* Em vez de escondermos os filtros de país/setor (como antes — o que os
      tornava inacessíveis no telemóvel), mostramo-los numa linha própria,
@@ -1197,17 +1296,16 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 
   /* Alvos de toque maiores — mais fáceis de acertar com o dedo. */
   .card-expand-btn, .hero-expand-btn, .rec-action-btn, .share-btn,
-  #theme-toggle, #rec-settings-btn { min-height: 40px; }
+  #more-menu-btn, #search-toggle-btn { min-height: 40px; }
   .rec-action-btn { padding: 8px 12px; }
 
   /* Linhas de ações não devem "explodir" a largura do cartão — quebram
      para a linha seguinte em vez de forçar scroll horizontal. */
   .rec-actions, .share-row { flex-wrap: wrap; row-gap: 8px; }
 
-  /* Painel de recomendações: em vez de um dropdown fixo de 270px que
-     pode sair do ecrã em telemóveis estreitos, vira um cartão fixo,
-     centrado, com largura relativa ao ecrã. */
-  .rec-panel {
+  /* Menu "⋮": em vez de um dropdown fixo de 280px que pode sair do ecrã
+     em telemóveis estreitos, vira um cartão fixo, ancorado no fundo. */
+  .more-menu-panel {
     position: fixed; top: auto; bottom: 16px; left: 16px; right: 16px;
     width: auto; max-width: none;
   }
@@ -1258,7 +1356,8 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
       <span id="clock" aria-live="off">--:--:--</span>
     </div>
 
-    <div class="search-wrap">
+    <div class="search-wrap" id="search-wrap">
+      <button id="search-toggle-btn" type="button" aria-label="Abrir pesquisa" aria-expanded="false" aria-controls="search-input">🔍</button>
       <span class="search-icon" aria-hidden="true">🔍</span>
       <input type="search" id="search-input" placeholder="Buscar notícias…"
         autocomplete="off" aria-label="Buscar notícias">
@@ -1289,26 +1388,34 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 
     <div class="header-actions">
       <a id="maio-hub-btn" href="https://smaiol.vercel.app" target="_blank" rel="noopener noreferrer"
-        aria-label="Abrir o MAIO — simulador de entrevista de emprego" title="Abrir o MAIO — simulador de entrevista de emprego">
+        aria-label="Abrir o MAIO — treinador de entrevista de emprego com IA" title="Abrir o MAIO — treinador de entrevista de emprego com IA">
+        <span class="cta-badge">IA</span>
         <span class="icon-swap-wrap" aria-hidden="true">
-          <span class="icon-swap-a">🎯</span><span class="icon-swap-b">📚</span>
-        </span><span>MAIO</span>
+          <span class="icon-swap-a">🎤</span><span class="icon-swap-b">💼</span>
+        </span><span>Treina p/ entrevista</span>
       </a>
       <a id="loja-btn" href="https://aether-weld.vercel.app/" target="_blank" rel="noopener noreferrer"
         aria-label="Abrir a loja" title="Abrir a loja">
         <span class="loja-icon-wrap icon-swap-wrap" aria-hidden="true">
-          <span class="icon-swap-a">🙂</span><span class="icon-swap-b">🛒</span>
+          <span class="icon-swap-a">🛒</span><span class="icon-swap-b">🙂</span>
         </span><span>Loja</span>
       </a>
-      <button id="auth-btn" aria-label="Entrar com Google" title="Entrar com Google">
-        <div id="auth-spinner"></div>
-        <span class="auth-icon" id="auth-icon">👤</span>
-        <span id="auth-label">Entrar</span>
-      </button>
-      <div class="rec-settings-wrap">
-        <button id="rec-settings-btn" aria-label="Preferências de recomendação" title="Preferências de recomendação" aria-haspopup="true" aria-expanded="false">🎯</button>
-        <div class="rec-panel" id="rec-panel" role="dialog" aria-label="Preferências de recomendação">
-          <h4>Recomendações personalizadas</h4>
+
+      <div class="more-menu-wrap">
+        <button id="more-menu-btn" aria-label="Mais opções" title="Mais opções" aria-haspopup="true" aria-expanded="false">⋮</button>
+        <div class="more-menu-panel" id="more-menu-panel" role="dialog" aria-label="Mais opções">
+          <button id="theme-toggle" class="more-menu-row" type="button">
+            <span class="more-menu-row-icon" id="theme-toggle-icon">🌙</span>
+            <span id="theme-toggle-label">Tema escuro</span>
+          </button>
+          <button id="auth-btn" class="more-menu-row" aria-label="Entrar com Google" title="Entrar com Google">
+            <div id="auth-spinner"></div>
+            <span class="more-menu-row-icon auth-icon" id="auth-icon">👤</span>
+            <span id="auth-label">Entrar</span>
+          </button>
+
+          <div class="more-menu-divider"></div>
+          <div class="more-menu-section-title">🎯 Recomendações personalizadas</div>
           <p>O SEEM usa o que lês, guardas e marcas como "não interessa" para destacar notícias mais relevantes para ti. O feed continua a mostrar notícias recentes e diversas — nunca só o que já conheces.</p>
           <div class="rec-toggle-row">
             <span style="font-size:12.5px;font-weight:600;">Personalização ativa</span>
@@ -1317,7 +1424,6 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
           <button class="rec-panel-btn" id="rec-clear-btn" type="button">🗑️ Apagar histórico de interesses</button>
         </div>
       </div>
-      <button id="theme-toggle" aria-label="Alternar tema claro/escuro">🌙</button>
     </div>
   </div>
 
@@ -1440,6 +1546,9 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
       </div>
       <div class="footer-copy">© <span id="ano-footer"></span> SEEM. Todos os direitos reservados.</div>
       <div class="footer-copy" style="margin-top:6px;opacity:0.7;">By Andala</div>
+      <div class="footer-trust">🤝 O erro não é só humano — o SEEM também usa automação e pode falhar.
+        <button type="button" id="footer-report-btn">Reportar um erro</button>
+      </div>
     </div>
   </div>
 </footer>
@@ -1513,11 +1622,14 @@ setInterval(updateClock, 1000);
 
 /* ═══ THEME ═══ */
 const themeBtn = document.getElementById('theme-toggle');
+const themeIcon = document.getElementById('theme-toggle-icon');
+const themeLabel = document.getElementById('theme-toggle-label');
 let isDark = true;
 
 function applyTheme(dark) {
   document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
-  themeBtn.textContent = dark ? '🌙' : '☀️';
+  themeIcon.textContent = dark ? '🌙' : '☀️';
+  themeLabel.textContent = dark ? 'Tema escuro' : 'Tema claro';
   themeBtn.setAttribute('aria-label', dark ? 'Mudar para tema claro' : 'Mudar para tema escuro');
 }
 
@@ -2139,9 +2251,9 @@ function marcarComoNaoInteressante(n, wrapEl) {
   showToast('Obrigado — vamos mostrar menos notícias assim.', 'blue');
 }
 
-/* Painel de preferências (header) */
+/* Painel "⋮" (tema, conta, personalização) */
 function recAtualizarBotaoHeader() {
-  document.getElementById('rec-settings-btn')?.classList.toggle('rec-off', !recEnabled);
+  document.getElementById('more-menu-btn')?.classList.toggle('rec-off', !recEnabled);
   const sw = document.getElementById('rec-switch');
   if (sw) { sw.classList.toggle('on', recEnabled); sw.setAttribute('aria-checked', recEnabled); }
 }
@@ -2154,15 +2266,41 @@ function recToggleEnabled() {
   showToast(recEnabled ? '🎯 Personalização ativada' : '🎯 Personalização desativada — feed cronológico', 'blue');
 }
 
-document.getElementById('rec-settings-btn')?.addEventListener('click', e => {
+/* O painel "⋮" é movido para fora do <header> assim que a página carrega.
+   Motivo: o <header> usa `transform` pra se esconder ao rolar (ver bloco
+   mais abaixo), e um `transform` no elemento-pai vira a referência de
+   posição para filhos com position:fixed — isso fazia o painel "saltar"
+   e ficar preso perto do topo quando o cabeçalho escondia com o painel
+   aberto. Isolando o painel directamente no <body>, ele fica sempre
+   ancorado ao ecrã de verdade, independente da animação do cabeçalho. */
+document.body.appendChild(document.getElementById('more-menu-panel'));
+
+document.getElementById('more-menu-btn')?.addEventListener('click', e => {
   e.stopPropagation();
-  const panel = document.getElementById('rec-panel');
+  const panel = document.getElementById('more-menu-panel');
+  const btn = document.getElementById('more-menu-btn');
   const open = panel.classList.toggle('open');
-  document.getElementById('rec-settings-btn').setAttribute('aria-expanded', open);
+  btn.setAttribute('aria-expanded', open);
+  if (open && window.innerWidth > 760) {
+    // Ecrã largo: ancora o painel logo abaixo do botão "⋮".
+    const r = btn.getBoundingClientRect();
+    panel.style.top = `${Math.round(r.bottom + 10)}px`;
+    panel.style.right = `${Math.round(window.innerWidth - r.right)}px`;
+    panel.style.left = 'auto'; panel.style.bottom = 'auto';
+  } else if (open) {
+    // Telemóvel: limpa qualquer posição inline pra o CSS (cartão fixo no
+    // fundo do ecrã) da media query mandar.
+    panel.style.top = ''; panel.style.right = ''; panel.style.left = ''; panel.style.bottom = '';
+  }
 });
 document.addEventListener('click', e => {
-  const wrap = document.querySelector('.rec-settings-wrap');
-  if (wrap && !wrap.contains(e.target)) document.getElementById('rec-panel')?.classList.remove('open');
+  const wrap = document.querySelector('.more-menu-wrap');
+  const panel = document.getElementById('more-menu-panel');
+  const dentro = (wrap && wrap.contains(e.target)) || (panel && panel.contains(e.target));
+  if (!dentro) {
+    panel?.classList.remove('open');
+    document.getElementById('more-menu-btn')?.setAttribute('aria-expanded', 'false');
+  }
 });
 document.getElementById('rec-switch')?.addEventListener('click', recToggleEnabled);
 document.getElementById('rec-switch')?.addEventListener('keydown', e => {
@@ -2176,6 +2314,68 @@ document.getElementById('rec-clear-btn')?.addEventListener('click', () => {
   showToast('🗑️ Histórico de interesses apagado.', 'blue');
 });
 recAtualizarBotaoHeader();
+
+document.getElementById('footer-report-btn')?.addEventListener('click', () => {
+  const descricao = prompt('O que gostarias de reportar? (podes deixar em branco)');
+  if (descricao === null) return;
+  reportarErro(null, descricao);
+});
+
+/* ═══ CABEÇALHO: esconde ao rolar para baixo, mostra ao rolar para cima ═══
+   Dá mais espaço ao feed e uma sensação mais "polida"/nativa. Só some
+   depois de passar da própria altura do cabeçalho, e volta assim que o
+   utilizador rola para cima — mesmo que só um pouco. */
+(() => {
+  const headerEl = document.getElementById('header');
+  let lastY = window.scrollY;
+  let ticking = false;
+
+  function onScroll() {
+    const y = window.scrollY;
+    const headerH = headerEl.offsetHeight;
+    if (y > lastY && y > headerH) {
+      headerEl.classList.add('header-hidden');
+      document.getElementById('more-menu-panel')?.classList.remove('open');
+    } else if (y < lastY) {
+      headerEl.classList.remove('header-hidden');
+    }
+    lastY = y;
+    ticking = false;
+  }
+  window.addEventListener('scroll', () => {
+    if (!ticking) { requestAnimationFrame(onScroll); ticking = true; }
+  }, { passive: true });
+})();
+
+/* ═══ PESQUISA: colapsa numa lupa; expande ao clicar ═══ */
+(() => {
+  const wrap = document.getElementById('search-wrap');
+  const toggleBtn = document.getElementById('search-toggle-btn');
+  const input = document.getElementById('search-input');
+
+  function abrirPesquisa() {
+    wrap.classList.add('open');
+    toggleBtn.setAttribute('aria-expanded', 'true');
+    setTimeout(() => input.focus(), 150);
+  }
+  function fecharPesquisa() {
+    if (input.value.trim()) return; // não colapsa se houver texto pesquisado
+    wrap.classList.remove('open');
+    toggleBtn.setAttribute('aria-expanded', 'false');
+  }
+
+  toggleBtn.addEventListener('click', () => {
+    wrap.classList.contains('open') ? fecharPesquisa() : abrirPesquisa();
+  });
+  document.addEventListener('click', e => {
+    if (!wrap.contains(e.target)) fecharPesquisa();
+  });
+  input.addEventListener('keydown', e => {
+    if (e.key === 'Escape') { input.value = ''; input.blur(); fecharPesquisa(); }
+  });
+})();
+
+
 
 /* Recalcula apenas QUAIS notícias combinam com o filtro/busca atual —
    sem tocar na tela. Usada durante o carregamento automático do scroll
@@ -2475,7 +2675,9 @@ function populateHeroArticle(n) {
   inner.innerHTML = `
     <div class="article-author-line">Por ${esc(n.autor || 'Redação SEEM')} · ${relTime(n.ts)}</div>
     <div class="article-body">${corpoHtml(n.corpo)}</div>
+    ${ctaHTML(n)}
     ${recEngagementRowHTML(n)}
+    ${trustLineHTML(n)}
     ${shareButtonsHTML(n.titulo)}
     <div id="comments-wrap-hero-${n.ts}"></div>
   `;
@@ -2536,14 +2738,14 @@ function renderFeed(reset) {
   displayedCount += batch.length;
 }
 
-/* Liga os botões de reação (gostei / guardar / não interessa) presentes
-   num card ou no hero. `container` deve conter .rec-like-btn, .rec-save-btn
-   e .rec-hide-btn. `wrapEl` (opcional) é o elemento removido visualmente
-   quando o utilizador marca "não interessa". */
+/* Liga os botões de reação (gostei / guardar / não interessa / reportar
+   erro) presentes num card ou no hero. `wrapEl` (opcional) é o elemento
+   removido visualmente quando o utilizador marca "não interessa". */
 function bindRecActions(container, n, wrapEl) {
   const likeBtn = container.querySelector('.rec-like-btn');
   const saveBtn = container.querySelector('.rec-save-btn');
   const hideBtn = container.querySelector('.rec-hide-btn');
+  const reportBtn = container.querySelector('.trust-report-btn');
 
   likeBtn?.addEventListener('click', () => {
     const ativo = marcarComoGostei(n);
@@ -2557,6 +2759,70 @@ function bindRecActions(container, n, wrapEl) {
     showToast(ativo ? '🔖 Notícia guardada' : 'Removida dos guardados', 'blue');
   });
   hideBtn?.addEventListener('click', () => marcarComoNaoInteressante(n, wrapEl || container.closest('.card-wrap')));
+  reportBtn?.addEventListener('click', () => {
+    const descricao = prompt('O que parece estar errado nesta notícia? (opcional — podes deixar em branco)') ;
+    if (descricao === null) return; // utilizador cancelou
+    reportarErro(n, descricao);
+  });
+}
+
+/* Envia um relato de possível erro para o Firebase (rota /reports). Não
+   corrige nada sozinho — apenas avisa a redação. Nunca falha de forma
+   visível: se o envio não funcionar, avisa o utilizador com calma. */
+async function reportarErro(n, descricao) {
+  try {
+    await fetch(`${FB}/reports.json`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        noticiaTs: n?.ts || null,
+        titulo: n?.titulo || 'Geral (fora de uma notícia)',
+        descricao: (descricao || '').slice(0, 500),
+        ts: Date.now()
+      })
+    });
+    showToast('🤝 Obrigado! Vamos verificar.', 'blue');
+  } catch (e) {
+    showToast('Não foi possível enviar agora. Tenta novamente mais tarde.', 'blue');
+  }
+}
+
+/* CTA contextual dentro do artigo: sugere o MAIO em notícias de vagas
+   (é literalmente para isso que o MAIO existe) e a loja Aether em
+   notícias do setor de comércio. Só aparece quando faz sentido — não em
+   todas as notícias, para não parecer publicidade forçada. */
+function ctaHTML(n) {
+  const tags = categoriaTags(n);
+  const setor = (n.setor || '').toLowerCase();
+  let html = '';
+  if (tags.has('VAGAS')) {
+    html += `
+      <a class="inline-cta cta-maio" href="https://smaiol.vercel.app" target="_blank" rel="noopener noreferrer">
+        <span class="inline-cta-icon" aria-hidden="true">🎤</span>
+        <span class="inline-cta-text"><strong>Vais candidatar-te a esta vaga?</strong>Treina a tua entrevista com o MAIO, o treinador de entrevistas com IA.</span>
+        <span class="inline-cta-arrow" aria-hidden="true">→</span>
+      </a>`;
+  }
+  if (setor.includes('comerc') || setor.includes('comérc')) {
+    html += `
+      <a class="inline-cta cta-loja" href="https://aether-weld.vercel.app/" target="_blank" rel="noopener noreferrer">
+        <span class="inline-cta-icon" aria-hidden="true">🛒</span>
+        <span class="inline-cta-text"><strong>Relacionado com comércio.</strong>Dá uma vista de olhos aos produtos da loja Aether.</span>
+        <span class="inline-cta-arrow" aria-hidden="true">→</span>
+      </a>`;
+  }
+  return html;
+}
+
+/* Linha de confiança: assume publicamente que pode haver erro — humano ou
+   automático — e dá um caminho fácil para reportar. Transparência sobre
+   limites tende a aumentar a confiança mais do que fingir perfeição. */
+function trustLineHTML(n) {
+  return `
+    <div class="trust-line">
+      <span>🤝 O erro não é só humano — esta notícia também passa por automação e pode conter imprecisões.</span>
+      <button type="button" class="trust-report-btn">Reportar erro</button>
+    </div>`;
 }
 
 function recEngagementRowHTML(n) {
@@ -2617,7 +2883,9 @@ function toggleCard(n, wrap) {
       <div class="card-article-inner">
         <div class="article-author-line">Por ${esc(n.autor || 'Redação SEEM')} · ${relTime(n.ts)}</div>
         <div class="article-body">${corpoHtml(n.corpo)}</div>
+        ${ctaHTML(n)}
         ${recEngagementRowHTML(n)}
+        ${trustLineHTML(n)}
         ${shareButtonsHTML(n.titulo)}
         <div id="comments-wrap-card-${n.ts}"></div>
       </div>`;
